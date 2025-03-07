@@ -94,7 +94,7 @@
                 style="@style/tittle_medium_text"
                 android:textSize="18sp"/>
             <EditText
-                android:id="@+id/start_activity_study_place_edit_text"
+                android:id="@+id/start_activity_current_semester_edit_text"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:autofillHints=""
@@ -110,6 +110,7 @@
                 android:maxLength="1"/>
 
             <Button
+                android:id="@+id/start_activity_start_button"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:minHeight="48dp"

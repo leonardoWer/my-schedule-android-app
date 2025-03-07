@@ -1,5 +1,6 @@
 package com.example.myschedule;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.activity.EdgeToEdge;
@@ -14,11 +15,14 @@ import androidx.fragment.app.FragmentTransaction;
 import com.example.myschedule.editor.fragments.EditorFragment;
 import com.example.myschedule.lessons.fragments.LessonsFragment;
 import com.example.myschedule.schedule.fragments.ScheduleFragment;
+import com.example.myschedule.user.UserDataManager;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class MainActivity extends AppCompatActivity {
 
     private BottomNavigationView bottomMenu;
+
+    private UserDataManager userDataManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,6 +34,13 @@ public class MainActivity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, 0);
             return insets;
         });
+
+        // Проверяем, не зашёл ли пользователь первый раз
+        userDataManager = new UserDataManager(this);
+        if (userDataManager.isUserFirstTime()) {
+            Intent intent = new Intent(this, StartActivity.class);
+            startActivity(intent);
+        }
 
         // Находим элементы
         bottomMenu = findViewById(R.id.bottom_menu);
