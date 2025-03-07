@@ -10,12 +10,20 @@
         android:layout_height="wrap_content">
 
         <TextView
+            android:id="@+id/schedule_fragment_schedule_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/schedule"
-            android:textSize="20sp"/>
+            style="@style/tittle_bold_text"
+            android:layout_marginHorizontal="16dp"
+            android:layout_marginTop="8dp"/>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/schedule_fragment_recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/schedule_fragment_schedule_text"
+            android:layout_marginTop="4dp"/>
     </RelativeLayout>
-
-
 
 </FrameLayout>

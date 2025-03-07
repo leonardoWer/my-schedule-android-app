@@ -24,6 +24,7 @@
         app:itemBackground="@android:color/transparent"
         app:menu="@menu/bottom_menu"
         app:itemIconTint="@drawable/bottom_menu_icon_colors"
-        app:itemRippleColor="@android:color/transparent"/>
+        app:itemRippleColor="@android:color/transparent"
+        app:itemActiveIndicatorStyle="@android:color/transparent"/>
 
 </RelativeLayout>
