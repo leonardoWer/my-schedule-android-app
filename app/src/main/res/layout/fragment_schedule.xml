@@ -15,6 +15,7 @@
             android:layout_height="wrap_content"
             android:text="@string/schedule"
             style="@style/tittle_bold_text"
+            android:textSize="26sp"
             android:layout_marginHorizontal="16dp"
             android:layout_marginTop="8dp"/>
 

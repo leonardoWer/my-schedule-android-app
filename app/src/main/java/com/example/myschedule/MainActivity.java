@@ -12,6 +12,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import com.example.myschedule.actual.fragments.ActualFragment;
 import com.example.myschedule.editor.fragments.EditorFragment;
 import com.example.myschedule.lessons.fragments.LessonsFragment;
 import com.example.myschedule.schedule.fragments.ScheduleFragment;
@@ -65,6 +66,9 @@ public class MainActivity extends AppCompatActivity {
                 return true;
             } else if (itemId == R.id.nav_schedule) {
                 loadFragment(new ScheduleFragment());
+                return true;
+            } else if (itemId == R.id.nav_actual) {
+                loadFragment(new ActualFragment());
                 return true;
             } else {
                 return false;

@@ -12,6 +12,11 @@
         android:title="@string/schedule" />
 
     <item
+        android:id="@+id/nav_actual"
+        android:icon="@drawable/actual"
+        android:title="@string/actual" />
+
+    <item
         android:id="@+id/nav_editor"
         android:icon="@drawable/editor"
         android:title="@string/editor" />
