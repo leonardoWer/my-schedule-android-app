@@ -1,3 +1,12 @@
 <resources>
     <string name="app_name">my.schedule</string>
+
+    <string name="schedule">Расписание</string>
+    <string name="lessons">Предметы</string>
+    <string name="editor">Редактор</string>
+    <string name="actual">Актуальное</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+
 </resources>

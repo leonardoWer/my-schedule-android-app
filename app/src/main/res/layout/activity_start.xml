@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".StartActivity"
+    android:background="@drawable/blue_white_gradient"
+    android:layout_marginTop="-80dp">
+
+
+    <TextView
+        android:id="@+id/start_activity_hello_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="140dp"
+        android:elevation="10dp"
+        android:text="Здравствуйте"
+        style="@style/tittle_bold_text"
+        android:textColor="@color/white"/>
+
+    <TextView
+        android:id="@+id/start_activity_info_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="8dp"
+        android:elevation="10dp"
+        android:text="Перед началом давайте познакомимся"
+        style="@style/tittle_regular_text"
+        android:textColor="@color/white"
+        android:layout_below="@+id/start_activity_hello_text"
+        android:layout_marginHorizontal="16dp"
+        android:textAlignment="center"/>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="280dp"
+        android:background="@drawable/rounded_button">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="16dp">
+
+            <EditText
+                android:id="@+id/start_activity_name_edit_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:autofillHints="name"
+                android:minHeight="48dp"
+                android:layout_marginHorizontal="32dp"
+                android:layout_marginTop="16dp"
+                android:hint="Ваше имя"
+                style="@style/rounded_input"
+                android:background="@drawable/rounded_input"
+                android:layout_gravity="center"
+                android:inputType="textPersonName"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="32dp"
+                android:layout_marginTop="32dp"
+                android:text="Когда вы начали учиться?"
+                style="@style/tittle_medium_text"
+                android:textSize="18sp"/>
+            <EditText
+                android:id="@+id/start_activity_start_study_date_edit_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:minHeight="48dp"
+                android:layout_marginHorizontal="32dp"
+                android:layout_marginTop="16dp"
+                android:hint="Дата"
+                android:autofillHints=""
+                style="@style/rounded_input"
+                android:background="@drawable/rounded_input"
+                android:layout_gravity="center"
+                android:inputType="date"
+                android:maxEms="10"
+                android:maxLength="10"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="32dp"
+                android:layout_marginTop="32dp"
+                android:text="На каком вы сейчас курсе?"
+                style="@style/tittle_medium_text"
+                android:textSize="18sp"/>
+            <EditText
+                android:id="@+id/start_activity_current_semester_edit_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:autofillHints=""
+                android:minHeight="48dp"
+                android:layout_marginHorizontal="32dp"
+                android:layout_marginTop="16dp"
+                android:hint="Номер курса"
+                style="@style/rounded_input"
+                android:background="@drawable/rounded_input"
+                android:layout_gravity="center"
+                android:inputType="number"
+                android:maxEms="1"
+                android:maxLength="1"/>
+
+            <Button
+                android:id="@+id/start_activity_start_button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:minHeight="48dp"
+                android:text="Начать"
+                style="@style/blue_button"
+                android:layout_marginVertical="64dp"
+                android:layout_marginHorizontal="32dp" />
+
+        </LinearLayout>
+    </ScrollView>
+
+
+</RelativeLayout>

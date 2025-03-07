@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:layout_marginHorizontal="8dp"
+    android:layout_marginTop="16dp">
+
+    <TextView
+        android:id="@+id/calendar_day_day_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="День недели"
+        style="@style/tittle_bold_text"/>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/calendar_day_day_number_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="@style/tittle_regular_text"
+            android:text="Число"
+            android:textSize="16sp"/>
+
+        <RelativeLayout
+            android:layout_width="3dp"
+            android:layout_height="3dp"
+            android:background="@drawable/rounded_button"
+            android:backgroundTint="@color/gray"
+            android:layout_gravity="center"
+            android:layout_marginHorizontal="4dp"/>
+
+        <TextView
+            android:id="@+id/calendar_day_lessons_cnt_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="@style/tittle_regular_text"
+            android:text="количество пар"
+            android:textSize="16sp"/>
+
+    </LinearLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/calendar_day_lessons_recycler_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:layout_marginHorizontal="16dp"
+        android:background="@drawable/rounded_button"
+        android:backgroundTint="@color/white">
+    </androidx.recyclerview.widget.RecyclerView>
+
+</LinearLayout>
