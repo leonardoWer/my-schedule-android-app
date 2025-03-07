@@ -7,8 +7,18 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
+
+import com.example.myschedule.editor.fragments.EditorFragment;
+import com.example.myschedule.lessons.fragments.LessonsFragment;
+import com.example.myschedule.schedule.fragments.ScheduleFragment;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class MainActivity extends AppCompatActivity {
+
+    private BottomNavigationView bottomMenu;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -17,8 +27,44 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
+            v.setPadding(systemBars.left, systemBars.top, systemBars.right, 0);
             return insets;
         });
+
+        // Находим элементы
+        bottomMenu = findViewById(R.id.bottom_menu);
+
+        // Загружаем страницу
+        loadFragment(new ScheduleFragment());
+        initBottomMenu();
+    }
+
+    private void initBottomMenu() {
+        // Устанавливаем страницу по умолчанию
+        bottomMenu.setSelectedItemId(R.id.nav_schedule);
+
+        // Устанавливаем обработчики
+        bottomMenu.setOnItemSelectedListener(item -> {
+            int itemId = item.getItemId();
+            if (itemId == R.id.nav_editor) {
+                loadFragment(new EditorFragment());
+                return true;
+            } else if (itemId == R.id.nav_lessons) {
+                loadFragment(new LessonsFragment());
+                return true;
+            } else if (itemId == R.id.nav_schedule) {
+                loadFragment(new ScheduleFragment());
+                return true;
+            } else {
+                return false;
+            }
+        });
+    }
+
+    private void loadFragment(Fragment fragment) {
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.main_frame_layout, fragment);
+        fragmentTransaction.commit();
     }
 }

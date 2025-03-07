@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">my.schedule</string>
+
+    <string name="schedule">Расписание</string>
+    <string name="lessons">Предметы</string>
+    <string name="editor">Редактор</string>
+
+
 </resources>
