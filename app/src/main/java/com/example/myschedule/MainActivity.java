@@ -47,13 +47,13 @@ public class MainActivity extends AppCompatActivity {
         bottomMenu = findViewById(R.id.bottom_menu);
 
         // Загружаем страницу
-        loadFragment(new ScheduleFragment());
+        loadFragment(new ActualFragment());
         initBottomMenu();
     }
 
     private void initBottomMenu() {
         // Устанавливаем страницу по умолчанию
-        bottomMenu.setSelectedItemId(R.id.nav_schedule);
+        bottomMenu.setSelectedItemId(R.id.nav_actual);
 
         // Устанавливаем обработчики
         bottomMenu.setOnItemSelectedListener(item -> {

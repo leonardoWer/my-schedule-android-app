@@ -3,21 +3,371 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".editor.fragments.EditorFragment">
 
-    <RelativeLayout
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <TextView
-            android:id="@+id/schedule_fragment_schedule_text"
-            android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:scrollbars="none">
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/editor"
-            style="@style/tittle_bold_text"
-            android:textSize="26sp"
-            android:layout_marginHorizontal="16dp"
-            android:layout_marginTop="8dp"/>
-    </RelativeLayout>
+            android:orientation="vertical"
+            android:background="@drawable/white_background_gradient"
+            android:paddingBottom="16dp">
 
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="120dp"
+                android:background="@drawable/blue_white_gradient">
+
+                <TextView
+                    android:id="@+id/schedule_fragment_schedule_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/editor"
+                    style="@style/tittle_bold_text"
+                    android:textColor="@color/white"
+                    android:textSize="26sp"
+                    android:layout_marginHorizontal="16dp"
+                    android:layout_marginTop="8dp"/>
+
+                <androidx.cardview.widget.CardView
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    app:cardCornerRadius="14dp"
+                    android:elevation="2dp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginHorizontal="16dp">
+                    <ImageView
+                        android:id="@+id/editor_user_photo"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:contentDescription="@string/editor"
+                        android:src="@drawable/my_schedule_logo"
+                        android:scaleType="centerCrop"/>
+                </androidx.cardview.widget.CardView>
+            </RelativeLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginTop="8dp"
+                android:layout_marginHorizontal="8dp"
+                android:background="@drawable/rounded_button"
+                android:backgroundTint="@color/white"
+                android:padding="16dp"
+                android:elevation="4dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Текущий курс обучения"
+                    style="@style/tittle_medium_text"
+                    android:textSize="18sp"
+                    android:layout_marginTop="8dp"/>
+
+                <EditText
+                    android:id="@+id/editor_current_semester_edit_text"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:autofillHints=""
+                    android:minHeight="48dp"
+                    android:hint="Номер курса"
+                    style="@style/rounded_input"
+                    android:background="@drawable/rounded_input"
+                    android:layout_gravity="center"
+                    android:inputType="number"
+                    android:maxEms="1"
+                    android:maxLength="1"
+                    android:layout_marginTop="16dp"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginVertical="16dp"
+                android:layout_marginHorizontal="8dp"
+                android:background="@drawable/rounded_button"
+                android:backgroundTint="@color/white"
+                android:padding="16dp"
+                android:elevation="4dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Время занятий"
+                    style="@style/tittle_medium_text"
+                    android:textSize="18sp"
+                    android:layout_marginTop="8dp"/>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginHorizontal="8dp"
+                    android:layout_marginTop="16dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="1 пара"/>
+
+                    <EditText
+                        android:id="@+id/editor_time_edit_text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="08:10"
+                        android:layout_marginHorizontal="32dp"
+                        style="@style/blue_button"
+                        android:paddingHorizontal="12dp"
+                        android:paddingBottom="2dp"
+                        android:inputType="date"
+                        android:maxLength="5"
+                        android:maxEms="4"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginHorizontal="8dp"
+                    android:layout_marginTop="16dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="2 пара"/>
+
+                    <EditText
+                        android:id="@+id/editor_time_edit_text_2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="10:10"
+                        android:layout_marginHorizontal="32dp"
+                        style="@style/blue_button"
+                        android:paddingHorizontal="12dp"
+                        android:paddingBottom="2dp"
+                        android:inputType="date"
+                        android:maxLength="5"
+                        android:maxEms="4"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginHorizontal="8dp"
+                    android:layout_marginTop="16dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="3 пара"/>
+
+                    <EditText
+                        android:id="@+id/editor_time_edit_text_3"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="15:10"
+                        android:layout_marginHorizontal="32dp"
+                        style="@style/blue_button"
+                        android:paddingHorizontal="12dp"
+                        android:paddingBottom="2dp"
+                        android:inputType="date"
+                        android:maxLength="5"
+                        android:maxEms="4"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginHorizontal="8dp"
+                    android:layout_marginTop="16dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="4 пара"/>
+
+                    <EditText
+                        android:id="@+id/editor_time_edit_text_4"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="16:10"
+                        android:layout_marginHorizontal="32dp"
+                        style="@style/blue_button"
+                        android:paddingHorizontal="12dp"
+                        android:paddingBottom="2dp"
+                        android:inputType="date"
+                        android:maxLength="5"
+                        android:maxEms="4"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginHorizontal="8dp"
+                    android:layout_marginTop="16dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="5 пара"/>
+
+                    <EditText
+                        android:id="@+id/editor_time_edit_text_5"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="17:10"
+                        android:layout_marginHorizontal="32dp"
+                        style="@style/blue_button"
+                        android:paddingHorizontal="12dp"
+                        android:paddingBottom="2dp"
+                        android:inputType="date"
+                        android:maxLength="5"
+                        android:maxEms="4"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginHorizontal="8dp"
+                    android:layout_marginTop="16dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="6 пара"/>
+
+                    <EditText
+                        android:id="@+id/editor_time_edit_text_6"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="18:10"
+                        android:layout_marginHorizontal="32dp"
+                        style="@style/blue_button"
+                        android:paddingHorizontal="12dp"
+                        android:paddingBottom="2dp"
+                        android:inputType="date"
+                        android:maxLength="5"
+                        android:maxEms="4"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginHorizontal="8dp"
+                    android:layout_marginTop="16dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="7 пара"/>
+
+                    <EditText
+                        android:id="@+id/editor_time_edit_text_7"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="19:10"
+                        android:layout_marginHorizontal="32dp"
+                        style="@style/blue_button"
+                        android:paddingHorizontal="12dp"
+                        android:paddingBottom="2dp"
+                        android:inputType="date"
+                        android:maxLength="5"
+                        android:maxEms="4"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginHorizontal="8dp"
+                    android:layout_marginTop="16dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="8 пара"/>
+
+                    <EditText
+                        android:id="@+id/editor_time_edit_text_8"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="20:10"
+                        android:layout_marginHorizontal="32dp"
+                        style="@style/blue_button"
+                        android:paddingHorizontal="12dp"
+                        android:paddingBottom="2dp"
+                        android:inputType="date"
+                        android:maxLength="5"
+                        android:maxEms="4"/>
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginBottom="16dp"
+                android:layout_marginHorizontal="8dp"
+                android:background="@drawable/rounded_button"
+                android:backgroundTint="@color/white"
+                android:padding="16dp"
+                android:elevation="4dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Преподаватели"
+                    style="@style/tittle_medium_text"
+                    android:textSize="18sp"
+                    android:layout_marginTop="8dp"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginBottom="16dp"
+                android:layout_marginHorizontal="8dp"
+                android:background="@drawable/rounded_button"
+                android:backgroundTint="@color/white"
+                android:padding="16dp"
+                android:elevation="4dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Места обучения"
+                    style="@style/tittle_medium_text"
+                    android:textSize="18sp"
+                    android:layout_marginTop="8dp"/>
+
+            </LinearLayout>
+
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:minHeight="48dp"
+                android:background="@drawable/rounded_button"
+                style="@style/blue_button"
+                android:layout_marginHorizontal="16dp"
+                android:layout_marginTop="16dp"
+                android:text="Очистить всё"/>
+
+        </LinearLayout>
+    </ScrollView>
 </FrameLayout>
