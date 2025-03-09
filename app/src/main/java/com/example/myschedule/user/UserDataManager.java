@@ -10,7 +10,6 @@ public class UserDataManager {
 
     private final String PREFS_NAME = "user_data";
     private final String KEY_USER_NAME = "user_name";
-    private final String KEY_USER_FIRST_STUDY_DATE = "user_first_study_date";
     private final String KEY_USER_CURRENT_SEMESTER = "user_current_semester";
 
 
@@ -27,14 +26,6 @@ public class UserDataManager {
         return sharedPreferences.getString(KEY_USER_NAME, "");
     }
 
-    public void setUserFirstStudyDate(String date) {
-        editor.putString(KEY_USER_FIRST_STUDY_DATE, date);
-        editor.apply();
-    }
-    public String getUserFirstStudyDate() {
-        return sharedPreferences.getString(KEY_USER_FIRST_STUDY_DATE, "");
-    }
-
     public void setUserCurrentSemester(int currentSemester) {
         editor.putInt(KEY_USER_CURRENT_SEMESTER, currentSemester);
         editor.apply();
@@ -45,6 +36,6 @@ public class UserDataManager {
 
 
     public boolean isUserFirstTime() {
-        return getUserName().isEmpty() || getUserCurrentSemester() == 0 || getUserFirstStudyDate().isEmpty();
+        return getUserName().isEmpty() || getUserCurrentSemester() == 0;
     }
 }

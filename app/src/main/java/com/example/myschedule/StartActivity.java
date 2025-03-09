@@ -18,7 +18,7 @@ import com.example.myschedule.user.UserDataManager;
 
 public class StartActivity extends AppCompatActivity {
 
-    private EditText nameEditText, dateEditText, currentSemesterEditText;
+    private EditText nameEditText, currentSemesterEditText;
     private Button startButton;
 
     private UserDataManager userDataManager;
@@ -37,7 +37,6 @@ public class StartActivity extends AppCompatActivity {
 
         // Находим элементы
         nameEditText = findViewById(R.id.start_activity_name_edit_text);
-        dateEditText = findViewById(R.id.start_activity_start_study_date_edit_text);
         currentSemesterEditText = findViewById(R.id.start_activity_current_semester_edit_text);
         startButton = findViewById(R.id.start_activity_start_button);
 
@@ -51,14 +50,12 @@ public class StartActivity extends AppCompatActivity {
 
     private void saveAndStart() {
         String userName = nameEditText.getText().toString();
-        String date = dateEditText.getText().toString();
         String currentSemester = currentSemesterEditText.getText().toString();
-        Log.d("StartActivity", "User: " + userName + " " + date + " " + currentSemester);
+        Log.d("StartActivity", "User: " + userName + " " + currentSemester);
 
-        if (checkNotErrorsInData(userName, date, currentSemester)) {
+        if (checkNotErrorsInData(userName, currentSemester)) {
             // Сохраняем параметры
             userDataManager.setUserName(userName);
-            userDataManager.setUserFirstStudyDate(date);
             userDataManager.setUserCurrentSemester(Integer.parseInt(currentSemester));
 
             Toast.makeText(this, "Приятно познакомиться, " + userName, Toast.LENGTH_SHORT).show();
@@ -72,18 +69,18 @@ public class StartActivity extends AppCompatActivity {
         }
     }
 
-    private boolean checkNotErrorsInData(String name, String date, String semester) {
+    private boolean checkNotErrorsInData(String name, String semester) {
         boolean haveErrors = false;
         if (name.isEmpty()) {
             nameEditText.setError("Введите имя");
             haveErrors = true;
         }
-        if (date.isEmpty()) {
-            dateEditText.setError("Введите дату");
-            haveErrors = true;
-        }
         if (semester.isEmpty()) {
             currentSemesterEditText.setError("Введите текущий семестр");
+            haveErrors = true;
+        }
+        if (Integer.parseInt(semester) <= 0 || Integer.parseInt(semester) > 8) {
+            currentSemesterEditText.setError(semester + " - это число, а не семестр");
             haveErrors = true;
         }
         return !haveErrors;
