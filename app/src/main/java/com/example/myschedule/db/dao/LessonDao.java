@@ -18,8 +18,8 @@ public interface LessonDao {
     @Query("SELECT * FROM lessons WHERE semesterId = :semesterId")
     List<Lesson> getLessonsBySemesterId(int semesterId);
 
-    @Query("SELECT * FROM lessons WHERE semesterId = :semesterId AND dayOfWeek = :dayOfWeek AND startDate <= :date")
-    List<Lesson> getLessonsBySemesterIdAndDayOfWeekAndDate(int semesterId, int dayOfWeek, Date date);
+    @Query("SELECT * FROM lessons WHERE semesterId = :semesterId AND startDate <= :date")
+    List<Lesson> getLessonsBySemesterIdAndDate(int semesterId, Date date);
 
     // Запрос с учетом типа повторения
     @Query("SELECT * FROM lessons WHERE semesterId = :semesterId AND dayOfWeek = :dayOfWeek AND startDate <= :date AND (repeatType = :repeatType OR repeatType IS NULL)")
@@ -27,5 +27,5 @@ public interface LessonDao {
 
     //  Запрос для получения всех уроков в заданном диапазоне дат (для оптимизации)
     @Query("SELECT * FROM lessons WHERE semesterId = :semesterId AND startDate BETWEEN :startDate AND :endDate")
-    List<Lesson> getLessonsBySemesterIdAndDateRange(String semesterId, Date startDate, Date endDate);
+    List<Lesson> getLessonsBySemesterIdAndDateRange(int semesterId, Date startDate, Date endDate);
 }

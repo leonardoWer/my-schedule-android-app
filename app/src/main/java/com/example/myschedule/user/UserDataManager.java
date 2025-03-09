@@ -35,16 +35,16 @@ public class UserDataManager {
         return sharedPreferences.getString(KEY_USER_FIRST_STUDY_DATE, "");
     }
 
-    public void setUserCurrentSemester(String currentSemester) {
-        editor.putString(KEY_USER_CURRENT_SEMESTER, currentSemester);
+    public void setUserCurrentSemester(int currentSemester) {
+        editor.putInt(KEY_USER_CURRENT_SEMESTER, currentSemester);
         editor.apply();
     }
-    public String getUserCurrentSemester() {
-        return sharedPreferences.getString(KEY_USER_CURRENT_SEMESTER, "");
+    public int getUserCurrentSemester() {
+        return sharedPreferences.getInt(KEY_USER_CURRENT_SEMESTER, 0);
     }
 
 
     public boolean isUserFirstTime() {
-        return getUserName().isEmpty() || getUserCurrentSemester().isEmpty() || getUserFirstStudyDate().isEmpty();
+        return getUserName().isEmpty() || getUserCurrentSemester() == 0 || getUserFirstStudyDate().isEmpty();
     }
 }

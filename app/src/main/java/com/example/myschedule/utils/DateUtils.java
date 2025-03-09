@@ -14,7 +14,7 @@ public class DateUtils {
 
     private static final String DATE_FORMAT = "dd.MM.yyyy";
 
-    private static String formatDate(Date date) {
+    public static String formatDate(Date date) {
         if (date == null) {
             Log.i("DateUtils", "Formatting date error: date = null");
             return null;

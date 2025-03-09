@@ -59,7 +59,7 @@ public class StartActivity extends AppCompatActivity {
             // Сохраняем параметры
             userDataManager.setUserName(userName);
             userDataManager.setUserFirstStudyDate(date);
-            userDataManager.setUserCurrentSemester(currentSemester);
+            userDataManager.setUserCurrentSemester(Integer.parseInt(currentSemester));
 
             Toast.makeText(this, "Приятно познакомиться, " + userName, Toast.LENGTH_SHORT).show();
 

@@ -48,17 +48,17 @@ public class EditorFragment extends Fragment {
 
     private void initEditorFragment() {
         // Получаем значения
-        String currentSemester = userDataManager.getUserCurrentSemester();
+        int currentSemester = userDataManager.getUserCurrentSemester();
 
         // Устанавливаем значения
-        currentSemesterEditText.setText(currentSemester);
+        currentSemesterEditText.setText(String.valueOf(currentSemester));
 
         // Устанавливаем обработчики
 
     }
 
     private void updateCurrentSemester() {
-        userDataManager.setUserCurrentSemester(currentSemesterEditText.getText().toString());
+        userDataManager.setUserCurrentSemester(Integer.parseInt(currentSemesterEditText.getText().toString()));
     }
 
     @Override
