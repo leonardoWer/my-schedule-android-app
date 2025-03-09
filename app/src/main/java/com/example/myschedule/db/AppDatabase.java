@@ -10,8 +10,7 @@ import com.example.myschedule.editor.items.Semester;
 import com.example.myschedule.schedule.items.Lesson;
 
 
-@Database(entities = {Lesson.class, Semester.class}, version = 2)
-@TypeConverters({Lesson.DateConverter.class, Lesson.RepeatTypeConverter.class})
+@Database(entities = {Lesson.class, Semester.class}, version = 1)
 public abstract class AppDatabase extends RoomDatabase {
     public abstract LessonDao lessonDao();
     public abstract SemesterDao semesterDao();

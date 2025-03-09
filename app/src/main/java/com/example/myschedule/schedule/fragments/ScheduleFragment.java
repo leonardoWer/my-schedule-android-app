@@ -20,7 +20,9 @@ import com.example.myschedule.editor.items.Semester;
 import com.example.myschedule.schedule.ScheduleManager;
 import com.example.myschedule.schedule.adapters.ScheduleRecyclerViewAdapter;
 import com.example.myschedule.schedule.items.CalendarDay;
+import com.example.myschedule.schedule.items.Lesson;
 import com.example.myschedule.user.UserDataManager;
+import com.example.myschedule.utils.DateUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,7 +39,7 @@ public class ScheduleFragment extends Fragment {
     private SemesterManager semesterManager;
 
     private Semester currentSemester;
-    private List<CalendarDay> calendarDays = new ArrayList<>();
+    private List<CalendarDay> calendarDays;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -66,8 +68,7 @@ public class ScheduleFragment extends Fragment {
 
     private void initRecyclerView() {
         scheduleRecyclerView.setLayoutManager(new LinearLayoutManager(context));
-        scheduleRecyclerViewAdapter = new ScheduleRecyclerViewAdapter(calendarDays);
-        scheduleRecyclerView.setAdapter(scheduleRecyclerViewAdapter);
+
     }
 
     private void initSchedule() {
@@ -83,11 +84,29 @@ public class ScheduleFragment extends Fragment {
                 // Получаем расписание
                 calendarDays = scheduleManager.getSchedule(currentSemester.getId(), currentSemester.getStartDate(), currentSemester.getEndDate());
 
-                // Обновляем адаптер в фоновом потоке
+                // Обновляем адаптер в основном потоке
                 requireActivity().runOnUiThread(() -> {
-                    scheduleRecyclerViewAdapter.setCalendarDays(calendarDays);
-                    scheduleRecyclerViewAdapter.notifyDataSetChanged();
+                    scheduleRecyclerViewAdapter = new ScheduleRecyclerViewAdapter(calendarDays);
+                    scheduleRecyclerView.setAdapter(scheduleRecyclerViewAdapter);
                 });
+            }
+        });
+    }
+
+    private void addFewLessons() {
+        Lesson newLesson = new Lesson("Матан", "Лекция", 7, DateUtils.getCurrentDateInMillis(), Lesson.RepeatType.NOT, "08:10", "09:40", "Bleyher", "zoom", 2);
+        scheduleManager.addLesson(newLesson, new ScheduleManager.LessonCallback() {
+            @Override
+            public void onSuccess() {
+                requireActivity().runOnUiThread(() -> {
+                    initSchedule();
+                });
+
+            }
+
+            @Override
+            public void onError(String message) {
+
             }
         });
     }
@@ -96,5 +115,6 @@ public class ScheduleFragment extends Fragment {
     public void onDestroy() {
         super.onDestroy();
         semesterManager.shutdown();
+        scheduleManager.shutdown();
     }
 }

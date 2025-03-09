@@ -1,5 +1,6 @@
 package com.example.myschedule.schedule.adapters;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.myschedule.R;
 import com.example.myschedule.schedule.items.CalendarDay;
 import com.example.myschedule.schedule.items.Lesson;
+import com.example.myschedule.utils.DateUtils;
 
 import java.util.List;
 
@@ -65,13 +67,13 @@ public class ScheduleRecyclerViewAdapter extends RecyclerView.Adapter<ScheduleRe
         public void bind(CalendarDay calendarDay) {
             // Устанавливаем данные для CalendarDay
             dayOfWeekNameTextView.setText(calendarDay.getDayOfWeek());
-            dateTextView.setText(calendarDay.getDate());
+            dateTextView.setText(DateUtils.getDateAndMonthNameFromLong(calendarDay.getDate()));
             lessonCountTextView.setText(String.valueOf(calendarDay.getLessonCount()));
 
             // Загружаем lessons
+            lessonsLinearLayout.removeAllViews();
             List<Lesson> lessons = calendarDay.getLessons();
             if (!lessons.isEmpty()) {
-                lessonsLinearLayout.removeAllViews();
                 for (Lesson lesson : lessons) {
                     addLessonView(lesson);
                 }

@@ -11,7 +11,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="День недели"
-        style="@style/tittle_bold_text"/>
+        style="@style/tittle_bold_text"
+        android:textColor="@color/blue"/>
 
     <LinearLayout
         android:layout_width="wrap_content"
@@ -24,15 +25,16 @@
             android:layout_height="wrap_content"
             style="@style/tittle_regular_text"
             android:text="Число"
-            android:textSize="16sp"/>
+            android:textSize="16sp"
+            android:layout_gravity="center_vertical"/>
 
         <RelativeLayout
             android:layout_width="3dp"
             android:layout_height="3dp"
             android:background="@drawable/rounded_button"
             android:backgroundTint="@color/gray"
-            android:layout_gravity="center"
-            android:layout_marginHorizontal="4dp"/>
+            android:layout_marginHorizontal="4dp"
+            android:layout_gravity="center_vertical"/>
 
         <TextView
             android:id="@+id/calendar_day_lessons_cnt_text"
@@ -40,7 +42,8 @@
             android:layout_height="wrap_content"
             style="@style/tittle_regular_text"
             android:text="количество пар"
-            android:textSize="16sp"/>
+            android:textSize="16sp"
+            android:layout_gravity="center_vertical"/>
 
     </LinearLayout>
 

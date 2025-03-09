@@ -13,7 +13,10 @@ import java.util.Locale;
 public class DateUtils {
 
     private static final String DATE_FORMAT = "dd.MM.yyyy";
+    private static final String DAY_OF_WEEK_NAME_FORMAT = "EEEE";
+    private static final String DATE_AND_MONTH_NAME_FORMAT = "d MMMM";
 
+    // Делает из даты строку формата 09.03.25
     public static String formatDate(Date date) {
         if (date == null) {
             Log.i("DateUtils", "Formatting date error: date = null");
@@ -24,6 +27,7 @@ public class DateUtils {
         return sdf.format(date);
     }
 
+    // Делает из строки формата 09.03.25 формат March ... типа Date
     public static Date parseDate(String dateString) {
         SimpleDateFormat sdf = new SimpleDateFormat(DATE_FORMAT, Locale.getDefault());
         try {
@@ -34,6 +38,7 @@ public class DateUtils {
         }
     }
 
+    // Возвращает текущую дату в формате Date
     public static Date getCurrentDate() {
         Calendar calendar = Calendar.getInstance();
         calendar.set(Calendar.HOUR_OF_DAY, 0);
@@ -43,67 +48,37 @@ public class DateUtils {
         return calendar.getTime();
     }
 
+    // Возвращает текущую дату в формате long
+    public static long getCurrentDateInMillis() {
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(Calendar.HOUR_OF_DAY, 0);
+        calendar.set(Calendar.MINUTE, 0);
+        calendar.set(Calendar.SECOND, 0);
+        calendar.set(Calendar.MILLISECOND, 0);
+        return calendar.getTimeInMillis();
+    }
+
+    // Возвращает текущую дату в формате (String) 09.03.2025
     public static String getCurrentStringDate() {
         return formatDate(getCurrentDate());
     }
 
-    public static Semester getCurrentSemester(int semester, int year) {
-        if (semester % 2 != 0) {
-            return new Semester(semester, getFirstOfSeptember(year), getFirstOfJanuary(year + 1));
-        }
-        return new Semester(semester, getFirstOfFebruary(year), getFirstOfJune(year));
+    // Переводит long (timestamp) в строку формата "dd.MM.yyyy"
+    public static String formatLongToString(long timestamp) {
+        SimpleDateFormat sdf = new SimpleDateFormat(DATE_FORMAT, Locale.getDefault());
+        return sdf.format(new Date(timestamp));
     }
 
-    public static Date getFirstOfSeptember(int year) {
-        Calendar calendar = Calendar.getInstance();
-        calendar.set(Calendar.YEAR, year);
-        calendar.set(Calendar.MONTH, Calendar.SEPTEMBER); // Месяцы начинаются с 0 (Январь = 0).
-        calendar.set(Calendar.DAY_OF_MONTH, 1);
-
-        calendar.set(Calendar.HOUR_OF_DAY, 0);
-        calendar.set(Calendar.MINUTE, 0);
-        calendar.set(Calendar.SECOND, 0);
-        calendar.set(Calendar.MILLISECOND, 0);
-        return calendar.getTime();
+    // Переводит long (timestamp) в строку названия дня недели (например, "Понедельник")
+    public static String getDayOfWeekNameFromLong(long timestamp) {
+        SimpleDateFormat sdf = new SimpleDateFormat(DAY_OF_WEEK_NAME_FORMAT, new Locale("ru")); // Полное название дня недели на русском
+        return sdf.format(new Date(timestamp));
     }
 
-    public static Date getFirstOfJanuary(int year) {
-        Calendar calendar = Calendar.getInstance();
-        calendar.set(Calendar.YEAR, year);
-        calendar.set(Calendar.MONTH, Calendar.JANUARY); // Месяцы начинаются с 0 (Январь = 0).
-        calendar.set(Calendar.DAY_OF_MONTH, 1);
-
-        calendar.set(Calendar.HOUR_OF_DAY, 0);
-        calendar.set(Calendar.MINUTE, 0);
-        calendar.set(Calendar.SECOND, 0);
-        calendar.set(Calendar.MILLISECOND, 0);
-        return calendar.getTime();
-    }
-
-    public static Date getFirstOfFebruary(int year) {
-        Calendar calendar = Calendar.getInstance();
-        calendar.set(Calendar.YEAR, year);
-        calendar.set(Calendar.MONTH, Calendar.FEBRUARY);
-        calendar.set(Calendar.DAY_OF_MONTH, 1);
-
-        calendar.set(Calendar.HOUR_OF_DAY, 0);
-        calendar.set(Calendar.MINUTE, 0);
-        calendar.set(Calendar.SECOND, 0);
-        calendar.set(Calendar.MILLISECOND, 0);
-        return calendar.getTime();
-    }
-
-    public static Date getFirstOfJune(int year) {
-        Calendar calendar = Calendar.getInstance();
-        calendar.set(Calendar.YEAR, year);
-        calendar.set(Calendar.MONTH, Calendar.JUNE);
-        calendar.set(Calendar.DAY_OF_MONTH, 1);
-
-        calendar.set(Calendar.HOUR_OF_DAY, 0);
-        calendar.set(Calendar.MINUTE, 0);
-        calendar.set(Calendar.SECOND, 0);
-        calendar.set(Calendar.MILLISECOND, 0);
-        return calendar.getTime();
+    // Переводит long (timestamp) в строку типа "9 февраля"
+    public static String getDateAndMonthNameFromLong(long timestamp) {
+        SimpleDateFormat sdf = new SimpleDateFormat(DATE_AND_MONTH_NAME_FORMAT, new Locale("ru")); // "d" - число, "MMMM" - название месяца на русском
+        return sdf.format(new Date(timestamp));
     }
 
 }

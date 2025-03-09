@@ -1,17 +1,15 @@
 package com.example.myschedule.editor;
 
 import android.content.Context;
-import android.util.Log;
-
 import androidx.room.Room;
-
 import com.example.myschedule.db.AppDatabase;
-import com.example.myschedule.editor.items.Semester;
-import com.example.myschedule.utils.DateUtils;
 
+import android.util.Log;
 import java.util.Calendar;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+
+import com.example.myschedule.editor.items.Semester;
 
 public class SemesterManager {
 
@@ -33,7 +31,7 @@ public class SemesterManager {
 
                 // Генерируем следующие учебные промежутки
                 for (int semester = currentSemester; semester <= SEMESTER_CNT; semester++) {
-                    Semester newSemester = DateUtils.getCurrentSemester(semester, currentYear);
+                    Semester newSemester = getCurrentSemester(semester, currentYear);
                     db.semesterDao().insert(newSemester);
 
                     Log.w("SemesterManager", "Initialize semesters: new semester added id: " + newSemester.getId() + ", end date: " + newSemester.getEndDate());
@@ -62,5 +60,61 @@ public class SemesterManager {
 
     public void shutdown() {
         executorService.shutdown();
+    }
+
+    // Методы для создания Semester
+    private Semester getCurrentSemester(int semester, int year) {
+        if (semester % 2 != 0) {
+            return new Semester(semester, getFirstOfSeptember(year), getFirstOfJanuary(year + 1));
+        }
+        return new Semester(semester, getFirstOfFebruary(year), getFirstOfJune(year));
+    }
+
+    private long getFirstOfSeptember(int year) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(Calendar.YEAR, year);
+        calendar.set(Calendar.MONTH, Calendar.SEPTEMBER);
+        calendar.set(Calendar.DAY_OF_MONTH, 1);
+
+        setOnlyImportantDataForDate(calendar);
+        return calendar.getTimeInMillis(); // Возвращаем timestamp
+    }
+
+    private long getFirstOfJanuary(int year) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(Calendar.YEAR, year);
+        calendar.set(Calendar.MONTH, Calendar.JANUARY);
+        calendar.set(Calendar.DAY_OF_MONTH, 1);
+        setOnlyImportantDataForDate(calendar);
+
+        return calendar.getTimeInMillis(); // Возвращаем timestamp
+    }
+
+    private long getFirstOfFebruary(int year) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(Calendar.YEAR, year);
+        calendar.set(Calendar.MONTH, Calendar.FEBRUARY);
+        calendar.set(Calendar.DAY_OF_MONTH, 1);
+        setOnlyImportantDataForDate(calendar);
+
+        return calendar.getTimeInMillis(); // Возвращаем timestamp
+    }
+
+    private long getFirstOfJune(int year) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(Calendar.YEAR, year);
+        calendar.set(Calendar.MONTH, Calendar.JUNE);
+        calendar.set(Calendar.DAY_OF_MONTH, 1);
+        setOnlyImportantDataForDate(calendar);
+
+        return calendar.getTimeInMillis(); // Возвращаем timestamp
+    }
+
+    // Устанавливает нулевые значения для времени (часы, минуты, секунды, миллисекунды)
+    private void setOnlyImportantDataForDate(Calendar calendar) {
+        calendar.set(Calendar.HOUR_OF_DAY, 0);
+        calendar.set(Calendar.MINUTE, 0);
+        calendar.set(Calendar.SECOND, 0);
+        calendar.set(Calendar.MILLISECOND, 0);
     }
 }

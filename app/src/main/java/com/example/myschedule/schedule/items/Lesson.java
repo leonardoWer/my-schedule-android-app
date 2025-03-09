@@ -29,23 +29,19 @@ public class Lesson {
     private String teacher;
     private String place;
     private int dayOfWeek; // 1 (Понедельник), 2 (Вторник), ..., 7 (Воскресенье)
-
-    @TypeConverters(DateConverter.class)
-    private Date startDate; // Дата начала действия записи
-
-    private RepeatType repeatType;
-
+    private long date; // Дата
+    private RepeatType repeatType; // Тип повторения
     private int semesterId; // Связь с таблицей семестров
 
     public Lesson() {
         this.id = UUID.randomUUID().toString();
     }
 
-    public Lesson(String name, String assessmentType, int dayOfWeek, Date startDate, RepeatType repeatType, String startTime, String endTime, String teacher, String place, int semesterId) {
+    public Lesson(String name, String assessmentType, int dayOfWeek, long date, RepeatType repeatType, String startTime, String endTime, String teacher, String place, int semesterId) {
         this.name = name;
         this.assessmentType = assessmentType;
         this.dayOfWeek = dayOfWeek;
-        this.startDate = startDate;
+        this.date = date;
         this.repeatType = repeatType;
         this.startTime = startTime;
         this.endTime = endTime;
@@ -55,9 +51,10 @@ public class Lesson {
         id = "";
     }
 
-    public void setId(String id) {
+    public void setId(@NonNull String id) {
         this.id = id;
     }
+    @NonNull
     public String getId() {
         return id;
     }
@@ -111,11 +108,11 @@ public class Lesson {
         return dayOfWeek;
     }
 
-    public void setStartDate(Date startDate) {
-        this.startDate = startDate;
+    public void setDate(long date) {
+        this.date = date;
     }
-    public Date getStartDate() {
-        return startDate;
+    public long getDate() {
+        return date;
     }
 
     public void setRepeatType(RepeatType repeatType) {
@@ -130,32 +127,6 @@ public class Lesson {
     }
     public void setSemesterId(int semesterId) {
         this.semesterId = semesterId;
-    }
-
-    // Класс-конвертер для Date
-    public static class DateConverter {
-        @TypeConverter
-        public Long fromDate(Date date) {
-            return date == null ? null : date.getTime();
-        }
-
-        @TypeConverter
-        public Date toDate(Long timestamp) {
-            return timestamp == null ? null : new Date(timestamp);
-        }
-    }
-
-    // TypeConverter для RepeatType
-    public static class RepeatTypeConverter {
-        @TypeConverter
-        public String fromRepeatType(RepeatType repeatType) {
-            return repeatType == null ? null : repeatType.name();
-        }
-
-        @TypeConverter
-        public RepeatType toRepeatType(String repeatType) {
-            return repeatType == null ? null : RepeatType.valueOf(repeatType);
-        }
     }
 
 }

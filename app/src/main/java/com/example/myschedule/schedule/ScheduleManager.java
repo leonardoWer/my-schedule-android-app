@@ -1,6 +1,7 @@
 package com.example.myschedule.schedule;
 
 import android.content.Context;
+import android.os.Debug;
 import android.util.Log;
 
 import androidx.room.Room;
@@ -10,65 +11,120 @@ import com.example.myschedule.schedule.items.CalendarDay;
 import com.example.myschedule.schedule.items.Lesson;
 import com.example.myschedule.utils.DateUtils;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
-import java.util.Locale;
-import java.util.Objects;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class ScheduleManager {
 
     private final AppDatabase db;
+    private final ExecutorService executorService = Executors.newFixedThreadPool(4);
 
     public ScheduleManager(Context context) {
         db = Room.databaseBuilder(context.getApplicationContext(), AppDatabase.class, "schedule-db").build();
     }
 
-    public List<CalendarDay> getSchedule(int semesterId, Date startDate, Date endDate) {
+    public List<CalendarDay> getSchedule(int semesterId, long startDate, long endDate) {
         List<CalendarDay> calendarDays = generateCalendarDays(startDate, endDate);
         List<Lesson> allLessons = db.lessonDao().getLessonsBySemesterIdAndDateRange(semesterId, startDate, endDate);
 
         for (CalendarDay calendarDay : calendarDays) {
-            String calendarDayDate = calendarDay.getDate();
+            long calendarDayDate = calendarDay.getDate();
             for (Lesson lesson : allLessons) {
-                if (Objects.equals(DateUtils.formatDate(lesson.getStartDate()), calendarDayDate)) {
+                if (calendarDayDate == lesson.getDate()) {
+                    Log.d("ScheduleManager", "Added lesson: " + lesson.getName() + " " + DateUtils.formatLongToString(lesson.getDate()) + "\nOn calendarDay: " + DateUtils.formatLongToString(calendarDay.getDate()));
                     calendarDay.getLessons().add(lesson);
                 }
             }
 
             calendarDay.setLessonCount(calendarDay.getLessons().size());
 
-            Log.d("Schedule manager", "Added new calendar day on " + calendarDay.getDate() + ", lesson cnt: " + calendarDay.getLessonCount());
+            Log.d("Schedule manager", "Load calendar day on " + DateUtils.formatLongToString(calendarDay.getDate()) + ", lesson cnt: " + calendarDay.getLessonCount());
         }
 
         return calendarDays;
     }
 
-    private List<CalendarDay> generateCalendarDays(Date startDate, Date endDate) {
+    private List<CalendarDay> generateCalendarDays(long startDate, long endDate) {
         List<CalendarDay> calendarDays = new ArrayList<>();
 
         Calendar calendar = Calendar.getInstance();
-        calendar.setTime(startDate);
+        calendar.setTimeInMillis(startDate);
         calendar.set(Calendar.HOUR_OF_DAY, 0);
         calendar.set(Calendar.MINUTE, 0);
         calendar.set(Calendar.SECOND, 0);
         calendar.set(Calendar.MILLISECOND, 0);
 
-        SimpleDateFormat dayOfWeekFormat = new SimpleDateFormat("EEEE", new Locale("ru")); // Полное название дня недели на русском
+        while (calendar.getTimeInMillis() <= endDate) {
+            long currentDateInMillis = calendar.getTimeInMillis();
+            String dayOfWeekName = DateUtils.getDayOfWeekNameFromLong(currentDateInMillis);
 
-        while (!calendar.getTime().after(endDate)) {
-            Date currentDate = calendar.getTime();
-            String dayOfWeekName = dayOfWeekFormat.format(currentDate);
-            String date = DateUtils.formatDate(currentDate);
+            calendarDays.add(new CalendarDay(dayOfWeekName, currentDateInMillis, 0, new ArrayList<>()));
 
-            calendarDays.add(new CalendarDay(dayOfWeekName, date, 0, new ArrayList<>()));
-
-            Log.d("ScheduleManager", "Generating calendar day: " + dayOfWeekName + ", date: " + date);
             calendar.add(Calendar.DAY_OF_MONTH, 1); // Переходим к следующему дню
         }
 
         return calendarDays;
+    }
+
+    public void addLesson(Lesson lesson, LessonCallback callback) {
+        executorService.execute(() -> {
+            try {
+                db.lessonDao().insert(lesson);
+                if (callback != null) {
+                    callback.onSuccess();
+                }
+            } catch (Exception e) {
+                Log.e("ScheduleManager", "Error adding lesson: " + e.getMessage());
+                if (callback != null) {
+                    callback.onError(e.getMessage());
+                }
+            }
+        });
+    }
+
+    //  Метод для удаления предмета
+    public void deleteLesson(Lesson lesson, LessonCallback callback) {
+        executorService.execute(() -> {
+            try {
+                db.lessonDao().delete(lesson);
+                if (callback != null) {
+                    callback.onSuccess();
+                }
+            } catch (Exception e) {
+                Log.e("ScheduleManager", "Error deleting lesson: " + e.getMessage());
+                if (callback != null) {
+                    callback.onError(e.getMessage());
+                }
+            }
+        });
+    }
+
+    //  Метод для редактирования предмета
+    public void updateLesson(Lesson lesson, LessonCallback callback) {
+        executorService.execute(() -> {
+            try {
+                db.lessonDao().update(lesson);
+                if (callback != null) {
+                    callback.onSuccess();
+                }
+            } catch (Exception e) {
+                Log.e("ScheduleManager", "Error updating lesson: " + e.getMessage());
+                if (callback != null) {
+                    callback.onError(e.getMessage());
+                }
+            }
+        });
+    }
+
+    public interface LessonCallback {
+        void onSuccess();
+        void onError(String message);
+    }
+
+    public void shutdown() {
+        executorService.shutdown();
     }
 }
