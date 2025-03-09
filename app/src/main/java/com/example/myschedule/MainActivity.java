@@ -1,8 +1,8 @@
 package com.example.myschedule;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
-
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
@@ -35,6 +35,7 @@ public class MainActivity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, 0);
             return insets;
         });
+        getWindow().setStatusBarColor(Color.WHITE);
 
         // Проверяем, не зашёл ли пользователь первый раз
         userDataManager = new UserDataManager(this);

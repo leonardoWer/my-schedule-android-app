@@ -23,28 +23,26 @@ public class UserDataManager {
         editor.putString(KEY_USER_NAME, userName);
         editor.apply();
     }
+    public String getUserName() {
+        return sharedPreferences.getString(KEY_USER_NAME, "");
+    }
 
     public void setUserFirstStudyDate(String date) {
         editor.putString(KEY_USER_FIRST_STUDY_DATE, date);
         editor.apply();
+    }
+    public String getUserFirstStudyDate() {
+        return sharedPreferences.getString(KEY_USER_FIRST_STUDY_DATE, "");
     }
 
     public void setUserCurrentSemester(String currentSemester) {
         editor.putString(KEY_USER_CURRENT_SEMESTER, currentSemester);
         editor.apply();
     }
-
-    public String getUserName() {
-        return sharedPreferences.getString(KEY_USER_NAME, "");
-    }
-
-    public String getUserFirstStudyDate() {
-        return sharedPreferences.getString(KEY_USER_FIRST_STUDY_DATE, "");
-    }
-
     public String getUserCurrentSemester() {
         return sharedPreferences.getString(KEY_USER_CURRENT_SEMESTER, "");
     }
+
 
     public boolean isUserFirstTime() {
         return getUserName().isEmpty() || getUserCurrentSemester().isEmpty() || getUserFirstStudyDate().isEmpty();

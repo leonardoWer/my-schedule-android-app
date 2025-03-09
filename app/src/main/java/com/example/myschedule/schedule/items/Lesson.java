@@ -1,8 +1,11 @@
 package com.example.myschedule.schedule.items;
 
 import java.util.Date;
+
+import androidx.annotation.NonNull;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
+import androidx.room.TypeConverter;
 import androidx.room.TypeConverters;
 import java.util.UUID;
 
@@ -16,6 +19,7 @@ public class Lesson {
     }
 
     @PrimaryKey
+    @NonNull
     private String id;
 
     private String name;
@@ -48,6 +52,7 @@ public class Lesson {
         this.teacher = teacher;
         this.place = place;
         this.semesterId = semesterId;
+        id = "";
     }
 
     public void setId(String id) {
@@ -57,10 +62,10 @@ public class Lesson {
         return id;
     }
 
-    public void setLessonName(String name) {
+    public void setName(String name) {
         this.name = name;
     }
-    public String getLessonName() {
+    public String getName() {
         return name;
     }
 
@@ -88,7 +93,7 @@ public class Lesson {
     public void setTeacher(String teacher) {
         this.teacher = teacher;
     }
-    public String getTeacherName() {
+    public String getTeacher() {
         return teacher;
     }
 
@@ -123,18 +128,18 @@ public class Lesson {
     public int getSemesterId() {
         return semesterId;
     }
-    public void setSemester(int semesterId) {
+    public void setSemesterId(int semesterId) {
         this.semesterId = semesterId;
     }
 
     // Класс-конвертер для Date
     public static class DateConverter {
-        @androidx.room.TypeConverter
+        @TypeConverter
         public Long fromDate(Date date) {
             return date == null ? null : date.getTime();
         }
 
-        @androidx.room.TypeConverter
+        @TypeConverter
         public Date toDate(Long timestamp) {
             return timestamp == null ? null : new Date(timestamp);
         }
@@ -142,12 +147,12 @@ public class Lesson {
 
     // TypeConverter для RepeatType
     public static class RepeatTypeConverter {
-        @androidx.room.TypeConverter
+        @TypeConverter
         public String fromRepeatType(RepeatType repeatType) {
             return repeatType == null ? null : repeatType.name();
         }
 
-        @androidx.room.TypeConverter
+        @TypeConverter
         public RepeatType toRepeatType(String repeatType) {
             return repeatType == null ? null : RepeatType.valueOf(repeatType);
         }

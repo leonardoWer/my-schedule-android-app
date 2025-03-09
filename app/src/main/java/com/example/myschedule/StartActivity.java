@@ -13,6 +13,7 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.example.myschedule.editor.SemesterManager;
 import com.example.myschedule.user.UserDataManager;
 
 public class StartActivity extends AppCompatActivity {
@@ -21,6 +22,7 @@ public class StartActivity extends AppCompatActivity {
     private Button startButton;
 
     private UserDataManager userDataManager;
+    private SemesterManager semesterManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,6 +43,7 @@ public class StartActivity extends AppCompatActivity {
 
         // Создаём менеджер
         userDataManager = new UserDataManager(this);
+        semesterManager = new SemesterManager(this);
 
         // Устанавливаем обработчики
         startButton.setOnClickListener(v -> saveAndStart());
@@ -53,12 +56,17 @@ public class StartActivity extends AppCompatActivity {
         Log.d("StartActivity", "User: " + userName + " " + date + " " + currentSemester);
 
         if (checkNotErrorsInData(userName, date, currentSemester)) {
+            // Сохраняем параметры
             userDataManager.setUserName(userName);
             userDataManager.setUserFirstStudyDate(date);
             userDataManager.setUserCurrentSemester(currentSemester);
 
             Toast.makeText(this, "Приятно познакомиться, " + userName, Toast.LENGTH_SHORT).show();
 
+            // Генерируем семестры в фоновом потоке
+            semesterManager.initializeSemesters(Integer.parseInt(currentSemester));
+
+            // Загружаем новую страницу
             Intent intent = new Intent(this, MainActivity.class);
             startActivity(intent);
         }
