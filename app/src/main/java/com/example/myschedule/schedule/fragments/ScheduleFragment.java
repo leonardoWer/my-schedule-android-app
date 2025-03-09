@@ -68,7 +68,6 @@ public class ScheduleFragment extends Fragment {
 
     private void initRecyclerView() {
         scheduleRecyclerView.setLayoutManager(new LinearLayoutManager(context));
-
     }
 
     private void initSchedule() {
@@ -82,7 +81,8 @@ public class ScheduleFragment extends Fragment {
                 Log.d("ScheduleFragment", "Loaded semester is: " + currentSemester.getId() + ", end date: " + currentSemester.getEndDate());
 
                 // Получаем расписание
-                calendarDays = scheduleManager.getSchedule(currentSemester.getId(), currentSemester.getStartDate(), currentSemester.getEndDate());
+                long startScheduleDate = getStartScheduleDate();
+                calendarDays = scheduleManager.getSchedule(currentSemester.getId(), startScheduleDate, currentSemester.getEndDate());
 
                 // Обновляем адаптер в основном потоке
                 requireActivity().runOnUiThread(() -> {
@@ -91,6 +91,14 @@ public class ScheduleFragment extends Fragment {
                 });
             }
         });
+    }
+
+    private long getStartScheduleDate() {
+        long todayDate = DateUtils.getCurrentDateInMillis();
+        if (todayDate > currentSemester.getStartDate() && todayDate <= currentSemester.getEndDate()) {
+            return todayDate;
+        }
+        return currentSemester.getStartDate();
     }
 
     private void addFewLessons() {

@@ -14,6 +14,7 @@ import com.example.myschedule.R;
 import com.example.myschedule.schedule.items.CalendarDay;
 import com.example.myschedule.schedule.items.Lesson;
 import com.example.myschedule.utils.DateUtils;
+import com.example.myschedule.utils.StringUtils;
 
 import java.util.List;
 
@@ -68,7 +69,7 @@ public class ScheduleRecyclerViewAdapter extends RecyclerView.Adapter<ScheduleRe
             // Устанавливаем данные для CalendarDay
             dayOfWeekNameTextView.setText(calendarDay.getDayOfWeek());
             dateTextView.setText(DateUtils.getDateAndMonthNameFromLong(calendarDay.getDate()));
-            lessonCountTextView.setText(String.valueOf(calendarDay.getLessonCount()));
+            lessonCountTextView.setText(StringUtils.formatLessonCount(calendarDay.getLessonCount()));
 
             // Загружаем lessons
             lessonsLinearLayout.removeAllViews();

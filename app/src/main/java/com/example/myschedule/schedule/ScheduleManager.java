@@ -10,6 +10,7 @@ import com.example.myschedule.db.AppDatabase;
 import com.example.myschedule.schedule.items.CalendarDay;
 import com.example.myschedule.schedule.items.Lesson;
 import com.example.myschedule.utils.DateUtils;
+import com.example.myschedule.utils.StringUtils;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -59,7 +60,7 @@ public class ScheduleManager {
 
         while (calendar.getTimeInMillis() <= endDate) {
             long currentDateInMillis = calendar.getTimeInMillis();
-            String dayOfWeekName = DateUtils.getDayOfWeekNameFromLong(currentDateInMillis);
+            String dayOfWeekName = StringUtils.capitalizeFirstLetter(DateUtils.getDayOfWeekNameFromLong(currentDateInMillis));
 
             calendarDays.add(new CalendarDay(dayOfWeekName, currentDateInMillis, 0, new ArrayList<>()));
 
