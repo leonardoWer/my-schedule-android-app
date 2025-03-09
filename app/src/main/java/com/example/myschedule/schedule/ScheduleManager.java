@@ -1,7 +1,6 @@
 package com.example.myschedule.schedule;
 
 import android.content.Context;
-import android.os.Debug;
 import android.util.Log;
 
 import androidx.room.Room;
@@ -27,25 +26,40 @@ public class ScheduleManager {
         db = Room.databaseBuilder(context.getApplicationContext(), AppDatabase.class, "schedule-db").build();
     }
 
-    public List<CalendarDay> getSchedule(int semesterId, long startDate, long endDate) {
-        List<CalendarDay> calendarDays = generateCalendarDays(startDate, endDate);
-        List<Lesson> allLessons = db.lessonDao().getLessonsBySemesterIdAndDateRange(semesterId, startDate, endDate);
+    public interface ScheduleCallback {
+        void onScheduleLoaded(List<CalendarDay> schedule);
+        void onError(String error);
+    }
 
-        for (CalendarDay calendarDay : calendarDays) {
-            long calendarDayDate = calendarDay.getDate();
-            for (Lesson lesson : allLessons) {
-                if (calendarDayDate == lesson.getDate()) {
-                    Log.d("ScheduleManager", "Added lesson: " + lesson.getName() + " " + DateUtils.formatLongToString(lesson.getDate()) + "\nOn calendarDay: " + DateUtils.formatLongToString(calendarDay.getDate()));
-                    calendarDay.getLessons().add(lesson);
+    public void getSchedule(int semesterId, long startDate, long endDate, ScheduleCallback callback) {
+        executorService.execute(() -> {
+            try {
+                List<CalendarDay> calendarDays = generateCalendarDays(startDate, endDate);
+                List<Lesson> allLessons = db.lessonDao().getLessonsBySemesterIdAndDateRange(semesterId, startDate, endDate);
+
+                for (CalendarDay calendarDay : calendarDays) {
+                    long calendarDayDate = calendarDay.getDate();
+                    for (Lesson lesson : allLessons) {
+                        if (calendarDayDate == lesson.getDate()) {
+                            Log.d("ScheduleManager", "Added lesson: " + lesson.getName() + " " + DateUtils.formatLongToString(lesson.getDate()) + "\nOn calendarDay: " + DateUtils.formatLongToString(calendarDay.getDate()));
+                            calendarDay.getLessons().add(lesson);
+                        }
+                    }
+
+                    calendarDay.setLessonCount(calendarDay.getLessons().size());
+                }
+
+                if (callback != null) {
+                    callback.onScheduleLoaded(calendarDays);
+                }
+
+            } catch (Exception e) {
+                Log.e("ScheduleManager", "Error getting schedule: " + e.getMessage());
+                if (callback != null) {
+                    callback.onError(e.getMessage());
                 }
             }
-
-            calendarDay.setLessonCount(calendarDay.getLessons().size());
-
-            Log.d("Schedule manager", "Load calendar day on " + DateUtils.formatLongToString(calendarDay.getDate()) + ", lesson cnt: " + calendarDay.getLessonCount());
-        }
-
-        return calendarDays;
+        });
     }
 
     private List<CalendarDay> generateCalendarDays(long startDate, long endDate) {
