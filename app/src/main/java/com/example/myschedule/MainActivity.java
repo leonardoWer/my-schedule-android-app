@@ -15,7 +15,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.example.myschedule.actual.fragments.ActualFragment;
-import com.example.myschedule.editor.SemesterManager;
+import com.example.myschedule.editor.managers.SemesterManager;
 import com.example.myschedule.editor.fragments.EditorFragment;
 import com.example.myschedule.editor.items.Semester;
 import com.example.myschedule.lessons.fragments.LessonsFragment;
@@ -120,6 +120,10 @@ public class MainActivity extends AppCompatActivity {
 
     public Semester getCurrentSemester() {
         return currentSemester;
+    }
+
+    public int getCurrentSemesterNumber() {
+        return currentSemester.getId();
     }
 
     public List<CalendarDay> getSchedule() {

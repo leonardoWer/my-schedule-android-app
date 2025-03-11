@@ -13,7 +13,7 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
-import com.example.myschedule.editor.SemesterManager;
+import com.example.myschedule.editor.managers.SemesterManager;
 import com.example.myschedule.user.UserDataManager;
 
 public class StartActivity extends AppCompatActivity {

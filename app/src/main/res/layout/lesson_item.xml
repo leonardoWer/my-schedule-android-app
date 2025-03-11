@@ -71,7 +71,7 @@
             android:text="Преподаватель"
             android:layout_marginStart="4dp"
             android:layout_marginTop="4dp"
-            app:drawableStartCompat="@drawable/schedule"
+            app:drawableStartCompat="@drawable/person"
             android:drawablePadding="4dp"
             app:drawableTint="@color/gray" />
 
@@ -83,7 +83,7 @@
             android:text="Место проведения"
             android:layout_marginStart="4dp"
             android:layout_marginTop="4dp"
-            app:drawableStartCompat="@drawable/schedule"
+            app:drawableStartCompat="@drawable/location"
             android:drawablePadding="4dp"
             app:drawableTint="@color/gray"/>
 

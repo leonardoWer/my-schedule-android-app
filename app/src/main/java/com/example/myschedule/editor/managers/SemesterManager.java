@@ -1,4 +1,4 @@
-package com.example.myschedule.editor;
+package com.example.myschedule.editor.managers;
 
 import android.content.Context;
 import androidx.room.Room;
@@ -10,6 +10,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 import com.example.myschedule.editor.items.Semester;
+import com.example.myschedule.utils.DateUtils;
 
 public class SemesterManager {
 
@@ -76,7 +77,7 @@ public class SemesterManager {
         calendar.set(Calendar.MONTH, Calendar.SEPTEMBER);
         calendar.set(Calendar.DAY_OF_MONTH, 1);
 
-        setOnlyImportantDataForDate(calendar);
+        DateUtils.setOnlyImportantDataForCalendar(calendar);
         return calendar.getTimeInMillis(); // Возвращаем timestamp
     }
 
@@ -85,7 +86,7 @@ public class SemesterManager {
         calendar.set(Calendar.YEAR, year);
         calendar.set(Calendar.MONTH, Calendar.JANUARY);
         calendar.set(Calendar.DAY_OF_MONTH, 1);
-        setOnlyImportantDataForDate(calendar);
+        DateUtils.setOnlyImportantDataForCalendar(calendar);
 
         return calendar.getTimeInMillis(); // Возвращаем timestamp
     }
@@ -95,7 +96,7 @@ public class SemesterManager {
         calendar.set(Calendar.YEAR, year);
         calendar.set(Calendar.MONTH, Calendar.FEBRUARY);
         calendar.set(Calendar.DAY_OF_MONTH, 1);
-        setOnlyImportantDataForDate(calendar);
+        DateUtils.setOnlyImportantDataForCalendar(calendar);
 
         return calendar.getTimeInMillis(); // Возвращаем timestamp
     }
@@ -105,16 +106,9 @@ public class SemesterManager {
         calendar.set(Calendar.YEAR, year);
         calendar.set(Calendar.MONTH, Calendar.JUNE);
         calendar.set(Calendar.DAY_OF_MONTH, 1);
-        setOnlyImportantDataForDate(calendar);
+        DateUtils.setOnlyImportantDataForCalendar(calendar);
 
         return calendar.getTimeInMillis(); // Возвращаем timestamp
     }
 
-    // Устанавливает нулевые значения для времени (часы, минуты, секунды, миллисекунды)
-    private void setOnlyImportantDataForDate(Calendar calendar) {
-        calendar.set(Calendar.HOUR_OF_DAY, 0);
-        calendar.set(Calendar.MINUTE, 0);
-        calendar.set(Calendar.SECOND, 0);
-        calendar.set(Calendar.MILLISECOND, 0);
-    }
 }

@@ -1,12 +1,11 @@
 package com.example.myschedule.schedule.items;
 
-import java.util.Date;
-
 import androidx.annotation.NonNull;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
-import androidx.room.TypeConverter;
-import androidx.room.TypeConverters;
+
+import com.example.myschedule.utils.DateUtils;
+
 import java.util.UUID;
 
 @Entity(tableName = "lessons")
@@ -48,7 +47,7 @@ public class Lesson {
         this.teacher = teacher;
         this.place = place;
         this.semesterId = semesterId;
-        id = "";
+        id = UUID.randomUUID().toString();
     }
 
     public void setId(@NonNull String id) {
@@ -129,4 +128,9 @@ public class Lesson {
         this.semesterId = semesterId;
     }
 
+    @NonNull
+    @Override
+    public String toString() {
+        return id + ": " + name + " " + DateUtils.formatLongToString(date);
+    }
 }

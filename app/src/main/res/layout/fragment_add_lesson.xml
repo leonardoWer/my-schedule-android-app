@@ -161,7 +161,7 @@
                     style="@style/tittle_medium_text"
                     android:textSize="18sp"/>
                 <Spinner
-                    android:id="@+id/add_lesson_lesson_start_time_type_spinner"
+                    android:id="@+id/add_lesson_lesson_start_time_spinner"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:minHeight="48dp"

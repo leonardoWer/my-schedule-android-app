@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:paddingBottom="16dp">
+
+    <DatePicker
+        android:id="@+id/dialog_lesson_date_picker"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal">
+        <ImageButton
+            android:id="@+id/dialog_lesson_close_image_button"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:background="@android:color/transparent"
+            android:src="@drawable/close"
+            android:layout_gravity="end"
+            android:layout_margin="2dp"
+            app:tint="@color/white" />
+    </DatePicker>
+
+     <RadioGroup
+         android:id="@+id/dialog_lesson_date_picker_repeat_radio_group"
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content">
+         <RadioButton
+             android:id="@+id/dialog_lesson_date_picker_not_repeat"
+             android:layout_width="wrap_content"
+             android:layout_height="wrap_content"
+             android:text="@string/not_repeat"/>
+         <RadioButton
+             android:id="@+id/dialog_lesson_date_picker_every_repeat"
+             android:layout_width="wrap_content"
+             android:layout_height="wrap_content"
+             android:text="@string/every_week_repeat"/>
+         <RadioButton
+             android:id="@+id/dialog_lesson_date_picker_two_weeks_repeat"
+             android:layout_width="wrap_content"
+             android:layout_height="wrap_content"
+             android:text="@string/once_a_two_week"/>
+     </RadioGroup>
+
+    <Button
+        android:id="@+id/dialog_lesson_save_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/rounded_button"
+        style="@style/blue_button"
+        android:layout_marginTop="16dp"
+        android:layout_marginHorizontal="8dp"
+        android:text="@string/save"/>
+
+</LinearLayout>
