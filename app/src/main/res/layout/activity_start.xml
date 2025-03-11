@@ -17,7 +17,7 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="140dp"
         android:elevation="10dp"
-        android:text="Здравствуйте"
+        android:text="@string/hello"
         style="@style/tittle_bold_text"
         android:textColor="@color/white"/>
 
@@ -28,7 +28,7 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="8dp"
         android:elevation="10dp"
-        android:text="Перед началом давайте познакомимся"
+        android:text="@string/hello_description"
         style="@style/tittle_regular_text"
         android:textColor="@color/white"
         android:layout_below="@+id/start_activity_hello_text"
@@ -55,7 +55,7 @@
                 android:minHeight="48dp"
                 android:layout_marginHorizontal="32dp"
                 android:layout_marginTop="16dp"
-                android:hint="Ваше имя"
+                android:hint="@string/your_name"
                 style="@style/rounded_input"
                 android:background="@drawable/rounded_input"
                 android:layout_gravity="center"
@@ -67,7 +67,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="32dp"
                 android:layout_marginTop="32dp"
-                android:text="На каком вы сейчас курсе?"
+                android:text="@string/what_is_your_course"
                 style="@style/tittle_medium_text"
                 android:textSize="18sp"/>
             <EditText
@@ -78,7 +78,7 @@
                 android:minHeight="48dp"
                 android:layout_marginHorizontal="32dp"
                 android:layout_marginTop="16dp"
-                android:hint="Номер курса"
+                android:hint="@string/course_number"
                 style="@style/rounded_input"
                 android:background="@drawable/rounded_input"
                 android:layout_gravity="center"
@@ -91,7 +91,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:minHeight="48dp"
-                android:text="Начать"
+                android:text="@string/start"
                 style="@style/blue_button"
                 android:layout_marginVertical="64dp"
                 android:layout_marginHorizontal="32dp" />
