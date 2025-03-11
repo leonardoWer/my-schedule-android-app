@@ -1,0 +1,243 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".schedule.fragments.AddLessonFragment">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:scrollbars="none">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingBottom="16dp">
+
+            <!--     Верхнее меню       -->
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="300dp"
+                android:background="@drawable/blue_white_gradient">
+                <ImageButton
+                    android:id="@+id/go_back_button"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:background="@android:color/transparent"
+                    android:src="@drawable/close"
+                    android:layout_alignParentEnd="true"
+                    app:tint="@color/white"
+                    android:layout_margin="2dp"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    style="@style/tittle_bold_text"
+                    android:textColor="@color/white"
+                    android:text="Добавить занятие"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="32dp"/>
+            </RelativeLayout>
+
+            <!--     Название и тип       -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingTop="4dp"
+                android:paddingBottom="20dp"
+                android:background="@drawable/rounded_button"
+                android:layout_marginTop="-200dp"
+                android:layout_marginHorizontal="8dp"
+                android:elevation="4dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="32dp"
+                    android:layout_marginTop="16dp"
+                    android:text="Название предмета"
+                    style="@style/tittle_medium_text"
+                    android:textSize="18sp"/>
+                <AutoCompleteTextView
+                    android:id="@+id/add_lesson_name_auto_text"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:minHeight="48dp"
+                    android:layout_marginHorizontal="32dp"
+                    android:layout_marginTop="16dp"
+                    android:hint="Название"
+                    style="@style/rounded_input"
+                    android:background="@drawable/rounded_input"
+                    android:layout_gravity="center"
+                    android:inputType="textMultiLine"
+                    android:maxLines="5"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="32dp"
+                    android:layout_marginTop="16dp"
+                    android:text="Тип предмета"
+                    style="@style/tittle_medium_text"
+                    android:textSize="18sp"/>
+                <Spinner
+                    android:id="@+id/add_lesson_lesson_assessment_type_spinner"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:minHeight="48dp"
+                    android:layout_marginHorizontal="32dp"
+                    android:layout_marginTop="16dp"
+                    style="@style/rounded_input"
+                    android:background="@drawable/rounded_input"
+                    android:layout_gravity="center" />
+            </LinearLayout>
+
+
+            <!--     Дата и время       -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingTop="4dp"
+                android:paddingBottom="20dp"
+                android:background="@drawable/rounded_button"
+                android:layout_marginTop="16dp"
+                android:layout_marginHorizontal="8dp"
+                android:elevation="4dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="32dp"
+                    android:layout_marginTop="16dp"
+                    android:text="Дата"
+                    style="@style/tittle_medium_text"
+                    android:textSize="18sp"/>
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:layout_marginHorizontal="32dp"
+                    android:background="@drawable/rounded_button"
+                    android:backgroundTint="@color/blue"
+                    android:paddingHorizontal="8dp"
+                    android:paddingVertical="4dp">
+                    <TextView
+                        android:id="@+id/add_lesson_date_text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        style="@style/tittle_regular_text"
+                        android:text="Выбранная дата"
+                        android:textSize="16sp"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginEnd="16dp"
+                        android:textColor="@color/white"
+                        android:layout_centerVertical="true"
+                        android:layout_toStartOf="@+id/add_lesson_date_dialog_image_button"
+                        android:layout_alignParentStart="true"/>
+                    <ImageButton
+                        android:id="@+id/add_lesson_date_dialog_image_button"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:src="@drawable/schedule"
+                        android:background="@android:color/transparent"
+                        android:layout_alignParentEnd="true"
+                        app:tint="@color/white"
+                        android:layout_centerVertical="true"/>
+                </RelativeLayout>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="32dp"
+                    android:layout_marginTop="16dp"
+                    android:text="Время начала"
+                    style="@style/tittle_medium_text"
+                    android:textSize="18sp"/>
+                <Spinner
+                    android:id="@+id/add_lesson_lesson_start_time_type_spinner"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:minHeight="48dp"
+                    android:layout_marginHorizontal="32dp"
+                    android:layout_marginTop="16dp"
+                    style="@style/rounded_input"
+                    android:background="@drawable/rounded_input"
+                    android:layout_gravity="center" />
+            </LinearLayout>
+
+
+            <!--     Преподаватель и место       -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingTop="4dp"
+                android:paddingBottom="20dp"
+                android:background="@drawable/rounded_button"
+                android:layout_marginTop="16dp"
+                android:layout_marginHorizontal="8dp"
+                android:elevation="4dp"
+                android:layout_marginBottom="16dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="32dp"
+                    android:layout_marginTop="16dp"
+                    android:text="Преподаватель"
+                    style="@style/tittle_medium_text"
+                    android:textSize="18sp"/>
+                <AutoCompleteTextView
+                    android:id="@+id/add_lesson_teacher_auto_text"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:minHeight="48dp"
+                    android:layout_marginHorizontal="32dp"
+                    android:layout_marginTop="16dp"
+                    android:hint="Фио"
+                    style="@style/rounded_input"
+                    android:background="@drawable/rounded_input"
+                    android:layout_gravity="center"
+                    android:inputType="textMultiLine"
+                    android:maxLines="5"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="32dp"
+                    android:layout_marginTop="16dp"
+                    android:text="Место обучения"
+                    style="@style/tittle_medium_text"
+                    android:textSize="18sp"/>
+                <AutoCompleteTextView
+                    android:id="@+id/add_lesson_place_auto_text"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:minHeight="48dp"
+                    android:layout_marginHorizontal="32dp"
+                    android:layout_marginTop="16dp"
+                    android:hint="Место"
+                    style="@style/rounded_input"
+                    android:background="@drawable/rounded_input"
+                    android:layout_gravity="center"
+                    android:inputType="textMultiLine"
+                    android:maxLines="5"/>
+            </LinearLayout>
+
+            <Button
+                android:id="@+id/add_lesson_save_button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/rounded_button"
+                style="@style/blue_button"
+                android:text="Сохранить"
+                android:layout_marginHorizontal="32dp"
+                android:layout_marginTop="8dp"/>
+
+        </LinearLayout>
+    </ScrollView>
+
+</FrameLayout>

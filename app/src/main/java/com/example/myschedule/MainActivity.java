@@ -102,6 +102,12 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    public void refreshSchedule() {
+        if (currentSemester != null) {
+            loadSchedule();
+        }
+    }
+
     private long getStartScheduleDate() {
         long todayDate = DateUtils.getCurrentDateInMillis();
         if (todayDate > currentSemester.getStartDate() && todayDate <= currentSemester.getEndDate()) {
