@@ -3,6 +3,7 @@ package com.example.myschedule;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -19,6 +20,7 @@ import com.example.myschedule.editor.fragments.EditorFragment;
 import com.example.myschedule.editor.items.Semester;
 import com.example.myschedule.lessons.fragments.LessonsFragment;
 import com.example.myschedule.schedule.ScheduleManager;
+import com.example.myschedule.schedule.fragments.AddLessonFragment;
 import com.example.myschedule.schedule.fragments.ScheduleFragment;
 import com.example.myschedule.schedule.items.CalendarDay;
 import com.example.myschedule.user.UserDataManager;
@@ -158,6 +160,30 @@ public class MainActivity extends AppCompatActivity {
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.main_frame_layout, fragment);
         fragmentTransaction.commit();
+    }
+
+    public void loadAddLessonFragment() {
+        bottomMenu.setVisibility(View.INVISIBLE);
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.setCustomAnimations(R.anim.slide_in, R.anim.slide_out);
+        fragmentTransaction.replace(R.id.add_lesson_frame_layout, new AddLessonFragment());
+        fragmentTransaction.commit();
+    }
+
+    public void closeAddLessonFragment() {
+        bottomMenu.setVisibility(View.VISIBLE);
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        Fragment addLessonFragment = fragmentManager.findFragmentById(R.id.add_lesson_frame_layout);
+        if (addLessonFragment != null) {
+            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+            fragmentTransaction.setCustomAnimations(R.anim.slide_in, R.anim.slide_out);
+            fragmentTransaction.remove(addLessonFragment);
+            fragmentTransaction.commit();
+
+            //Очищаем BackStack
+            fragmentManager.popBackStack();
+        }
     }
 
     @Override

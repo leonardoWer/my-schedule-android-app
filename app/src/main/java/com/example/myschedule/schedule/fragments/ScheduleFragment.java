@@ -6,6 +6,8 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -14,6 +16,7 @@ import android.os.Looper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 
 import com.example.myschedule.MainActivity;
 import com.example.myschedule.R;
@@ -26,6 +29,7 @@ import java.util.List;
 public class ScheduleFragment extends Fragment {
 
     private RecyclerView scheduleRecyclerView;
+    private ImageButton addLessonButton;
 
     private ScheduleRecyclerViewAdapter scheduleRecyclerViewAdapter;
 
@@ -44,10 +48,14 @@ public class ScheduleFragment extends Fragment {
 
         // Находим элементы
         scheduleRecyclerView = view.findViewById(R.id.schedule_fragment_recycler_view);
+        addLessonButton = view.findViewById(R.id.schedule_fragment_add_lesson_image_button);
 
         // Получаем контекст
         context = getContext();
         mainActivity = (MainActivity) requireActivity();
+
+        // Устанавливаем обработчики
+        addLessonButton.setOnClickListener(v -> mainActivity.loadAddLessonFragment());
 
         // Загружаем страницу
         initRecyclerView();

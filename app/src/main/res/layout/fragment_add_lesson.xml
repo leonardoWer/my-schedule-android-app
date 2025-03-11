@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".schedule.fragments.AddLessonFragment">
+    tools:context=".schedule.fragments.AddLessonFragment"
+    android:background="@color/white">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -82,16 +83,19 @@
                     android:text="Тип предмета"
                     style="@style/tittle_medium_text"
                     android:textSize="18sp"/>
-                <Spinner
-                    android:id="@+id/add_lesson_lesson_assessment_type_spinner"
+                <AutoCompleteTextView
+                    android:id="@+id/add_lesson_assessment_type_auto_text"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:minHeight="48dp"
                     android:layout_marginHorizontal="32dp"
                     android:layout_marginTop="16dp"
+                    android:hint="Лекция"
                     style="@style/rounded_input"
                     android:background="@drawable/rounded_input"
-                    android:layout_gravity="center" />
+                    android:layout_gravity="center"
+                    android:inputType="text"
+                    android:maxEms="20"/>
             </LinearLayout>
 
 
