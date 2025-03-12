@@ -12,8 +12,8 @@
         android:layout_height="wrap_content"
         android:text="1 пара"/>
 
-    <EditText
-        android:id="@+id/timetable_item_time_edit_text"
+    <TextView
+        android:id="@+id/timetable_item_time_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="08:10"
@@ -23,8 +23,6 @@
         style="@style/blue_button"
         android:paddingHorizontal="12dp"
         android:paddingBottom="2dp"
-        android:inputType="time"
         android:maxLength="5"
-        android:maxEms="5"
-        android:autofillHints="" />
+        android:maxEms="5" />
 </LinearLayout>

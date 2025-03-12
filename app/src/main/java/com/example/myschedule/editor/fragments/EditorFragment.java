@@ -1,5 +1,6 @@
 package com.example.myschedule.editor.fragments;
 
+import android.app.TimePickerDialog;
 import android.content.Context;
 import android.os.Bundle;
 
@@ -18,13 +19,16 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.TimePicker;
 
 import com.example.myschedule.R;
 import com.example.myschedule.editor.managers.TimetableManager;
 import com.example.myschedule.user.UserDataManager;
+import com.example.myschedule.utils.DateUtils;
 
 import org.w3c.dom.Text;
 
+import java.util.Calendar;
 import java.util.HashMap;
 
 
@@ -85,41 +89,20 @@ public class EditorFragment extends Fragment {
     }
 
     private void addTimetableItemView(String lessonNumber, String lessonTime) {
-        // Надуваем макетё
+        // Надуваем макете
         LayoutInflater inflater = LayoutInflater.from(context);
         View timetableItem = inflater.inflate(R.layout.timetable_item, null);
 
         // Находим элементы
         TextView lessonNumberTextView = timetableItem.findViewById(R.id.timetable_item_number_text);
-        EditText timeEditText = timetableItem.findViewById(R.id.timetable_item_time_edit_text);
+        TextView timeTextView = timetableItem.findViewById(R.id.timetable_item_time_text);
 
         // Устанавливаем значения
         lessonNumberTextView.setText(String.format("%s пара", lessonNumber));
-        timeEditText.setText(lessonTime);
+        timeTextView.setText(lessonTime);
 
         // Устанавливаем обработчики
-        timeEditText.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if (s.toString().isEmpty()) {
-                    timeEditText.setError("Нельзя удалить время");
-                }
-            }
-            @Override
-            public void afterTextChanged(Editable s) {
-                String newLessonTime = s.toString();
-                if (!newLessonTime.isEmpty()) {
-                    timetable.put(lessonNumber, newLessonTime);
-                    timetableManager.setLessonTime(lessonNumber, newLessonTime);
-                } else {
-                    timeEditText.setError("Введите время пары");
-                }
-            }
-        });
+        timeTextView.setOnClickListener(v -> showTimePickerDialog(lessonNumber, lessonTime, timeTextView));
 
         // Устанавливаем отступы
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
@@ -130,7 +113,6 @@ public class EditorFragment extends Fragment {
                 TypedValue.COMPLEX_UNIT_DIP,
                 8, context.getResources().getDisplayMetrics()
         );
-
         int marginTop = (int) TypedValue.applyDimension(
                 TypedValue.COMPLEX_UNIT_DIP,
                 16,
@@ -141,6 +123,26 @@ public class EditorFragment extends Fragment {
 
         // Добавляем в ll
         timetableLinearLayout.addView(timetableItem);
+    }
+
+    private void showTimePickerDialog(String lessonNumber, String lessonTime, TextView timeTextView) {
+        Calendar calendar = DateUtils.getCalendarFromTimeString(lessonTime);
+        if (calendar == null) {
+            calendar = Calendar.getInstance();
+        }
+        int hour = calendar.get(Calendar.HOUR_OF_DAY);
+        int minute = calendar.get(Calendar.MINUTE);
+
+        // Создаем диалог выбора времени
+        TimePickerDialog timePickerDialog = new TimePickerDialog(context, (view, hourOfDay, minute1) -> {
+            // Обрабатываем выбранное время
+            String formattedTime = String.format("%02d:%02d", hourOfDay, minute1);
+            timeTextView.setText(formattedTime);
+            timetableManager.setLessonTime(lessonNumber, formattedTime);
+
+        }, hour, minute, true);
+
+        timePickerDialog.show();
     }
 
     private void updateCurrentSemester() {
