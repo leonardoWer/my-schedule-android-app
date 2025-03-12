@@ -3,7 +3,11 @@ package com.example.myschedule.editor.managers;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import com.example.myschedule.editor.items.TimetableSpinnerItem;
+
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 public class TimetableManager {
 
@@ -54,5 +58,16 @@ public class TimetableManager {
         setLessonTime("6", "17:10");
         setLessonTime("7", "18:50");
         setLessonTime("8", "20:30");
+    }
+
+    public List<TimetableSpinnerItem> getTimetableSpinnerItems() {
+        List<TimetableSpinnerItem> timetableSpinnerItems = new ArrayList<>();
+        for (int i = 1; i<=8; i++) {
+            String lessonNumber = String.valueOf(i);
+            TimetableSpinnerItem timetableSpinnerItem = new TimetableSpinnerItem(lessonNumber, getLessonTime(lessonNumber));
+            timetableSpinnerItems.add(timetableSpinnerItem);
+        }
+
+        return timetableSpinnerItems;
     }
 }

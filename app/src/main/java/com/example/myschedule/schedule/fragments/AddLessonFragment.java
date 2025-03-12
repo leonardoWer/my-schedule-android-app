@@ -22,11 +22,15 @@ import android.widget.TextView;
 
 import com.example.myschedule.MainActivity;
 import com.example.myschedule.R;
+import com.example.myschedule.editor.items.TimetableSpinnerItem;
+import com.example.myschedule.editor.managers.TimetableManager;
 import com.example.myschedule.schedule.ScheduleManager;
+import com.example.myschedule.schedule.adapters.TimetableSpinnerAdapter;
 import com.example.myschedule.schedule.items.Lesson;
 import com.example.myschedule.utils.DateUtils;
 
 import java.util.Calendar;
+import java.util.List;
 
 public class AddLessonFragment extends Fragment {
 
@@ -38,15 +42,18 @@ public class AddLessonFragment extends Fragment {
     private AutoCompleteTextView teacherText, placeText;
     private Button saveButton;
 
+    private TimetableSpinnerAdapter timetableSpinnerAdapter;
+
     private String lessonName, lessonAssessmentType;
     private long lessonDate = -1;
     private Lesson.RepeatType lessonRepeatType = Lesson.RepeatType.NOT;
-    private String lessonStartTime;
+    private String lessonStartTime, lessonEndTime;
     private String teacher, place;
 
     private Context context;
     private MainActivity mainActivity;
     private ScheduleManager scheduleManager;
+    private TimetableManager timetableManager;
     private int currentSemester;
 
     @Override
@@ -70,13 +77,19 @@ public class AddLessonFragment extends Fragment {
         saveButton = view.findViewById(R.id.add_lesson_save_button);
 
         // Объявляем контекст
-        context = requireContext();
-        mainActivity = (MainActivity) requireActivity();
-        scheduleManager = new ScheduleManager(context);
-        currentSemester = mainActivity.getCurrentSemesterNumber();
+        initManagers();
 
         // Устанавливаем обработчики
         initButtons();
+        initAdapters();
+    }
+
+    private void initManagers() {
+        context = requireContext();
+        mainActivity = (MainActivity) requireActivity();
+        scheduleManager = new ScheduleManager(context);
+        timetableManager = new TimetableManager(context);
+        currentSemester = mainActivity.getCurrentSemesterNumber();
     }
 
     private void initButtons() {
@@ -85,20 +98,28 @@ public class AddLessonFragment extends Fragment {
         saveButton.setOnClickListener(v -> addLesson());
     }
 
+    private void initAdapters() {
+        // Адаптер для выбора времени пары
+        List<TimetableSpinnerItem> timetable = timetableManager.getTimetableSpinnerItems();
+        timetableSpinnerAdapter = new TimetableSpinnerAdapter(context, timetable);
+        timePickerSpinner.setAdapter(timetableSpinnerAdapter);
+    }
+
     private void addLesson() {
         // Получаем данные
         lessonName = lessonNameText.getText().toString();
         lessonAssessmentType = assessmentTypeText.getText().toString();
 
         // Временно
-        lessonStartTime = "8:10";
+        lessonStartTime = getLessonStartTime();
+        lessonEndTime = DateUtils.getEndLessonTime(lessonStartTime);
 
         teacher = teacherText.getText().toString();
         place = placeText.getText().toString();
 
         // Добавляем новый предмет если нет ошибок
         if (checkNotErrorsInData()) {
-            Lesson newLesson = new Lesson(lessonName, lessonAssessmentType, 0, lessonDate, lessonRepeatType, lessonStartTime, "9:40", teacher, place, currentSemester);
+            Lesson newLesson = new Lesson(lessonName, lessonAssessmentType, 0, lessonDate, lessonRepeatType, lessonStartTime, lessonEndTime, teacher, place, currentSemester);
 
             // Добавляем предмет
             scheduleManager.addLesson(newLesson, new ScheduleManager.LessonCallback() {
@@ -189,8 +210,19 @@ public class AddLessonFragment extends Fragment {
             dateTextView.setError("Выберите дату занятия");
             haveErrors = true;
         }
+        if (lessonStartTime.isEmpty() || lessonEndTime.isEmpty()) {
+            haveErrors = true;
+        }
 
         return !haveErrors;
+    }
+
+    private String getLessonStartTime() {
+        TimetableSpinnerItem selectedItem = (TimetableSpinnerItem) timePickerSpinner.getSelectedItem();
+        if (selectedItem != null) {
+            return selectedItem.getStartTime();
+        }
+        return timetableManager.getLessonTime("1"); // По умолчанию возвращаем время первой пары
     }
 
     private void closeFragment() {
