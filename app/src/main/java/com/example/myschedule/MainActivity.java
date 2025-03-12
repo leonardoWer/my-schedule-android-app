@@ -15,6 +15,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.example.myschedule.actual.fragments.ActualFragment;
+import com.example.myschedule.editor.fragments.UserFragment;
 import com.example.myschedule.editor.managers.SemesterManager;
 import com.example.myschedule.editor.fragments.EditorFragment;
 import com.example.myschedule.editor.items.Semester;
@@ -178,7 +179,6 @@ public class MainActivity extends AppCompatActivity {
         fragmentTransaction.replace(R.id.add_lesson_frame_layout, new AddLessonFragment());
         fragmentTransaction.commit();
     }
-
     public void closeAddLessonFragment() {
         bottomMenu.setVisibility(View.VISIBLE);
         FragmentManager fragmentManager = getSupportFragmentManager();
@@ -187,6 +187,27 @@ public class MainActivity extends AppCompatActivity {
             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
             fragmentTransaction.setCustomAnimations(R.anim.slide_in, R.anim.slide_out);
             fragmentTransaction.remove(addLessonFragment);
+            fragmentTransaction.commit();
+
+            //Очищаем BackStack
+            fragmentManager.popBackStack();
+        }
+    }
+
+    public void loadUserFragment() {
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.setCustomAnimations(R.anim.slide_in, R.anim.slide_out);
+        fragmentTransaction.replace(R.id.add_lesson_frame_layout, new UserFragment());
+        fragmentTransaction.commit();
+    }
+    public void closeUserFragment() {
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        Fragment userFragment = fragmentManager.findFragmentById(R.id.add_lesson_frame_layout);
+        if (userFragment != null) {
+            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+            fragmentTransaction.setCustomAnimations(R.anim.slide_in, R.anim.slide_out);
+            fragmentTransaction.remove(userFragment);
             fragmentTransaction.commit();
 
             //Очищаем BackStack

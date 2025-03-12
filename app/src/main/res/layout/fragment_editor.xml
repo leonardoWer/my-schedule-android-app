@@ -45,7 +45,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:contentDescription="@string/editor"
-                        android:src="@drawable/my_schedule_logo"
+                        android:src="@color/blue"
                         android:scaleType="centerCrop"/>
                 </androidx.cardview.widget.CardView>
             </RelativeLayout>

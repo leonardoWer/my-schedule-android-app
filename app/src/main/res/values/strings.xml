@@ -20,6 +20,8 @@
     <string name="not_repeat">Не повторять</string>
     <string name="every_week_repeat">Каждую неделю</string>
     <string name="once_a_two_week">Раз в две недели</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 
 </resources>

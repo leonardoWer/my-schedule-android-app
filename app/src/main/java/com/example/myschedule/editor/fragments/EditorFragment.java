@@ -17,10 +17,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
+import com.example.myschedule.MainActivity;
 import com.example.myschedule.R;
 import com.example.myschedule.editor.managers.TimetableManager;
 import com.example.myschedule.user.UserDataManager;
@@ -36,10 +38,12 @@ public class EditorFragment extends Fragment {
 
     private EditText currentSemesterEditText;
     private LinearLayout timetableLinearLayout;
+    private ImageView userPhotoImageView;
 
     private HashMap<String, String> timetable = new HashMap<>();
 
     private Context context;
+    private MainActivity mainActivity;
     private UserDataManager userDataManager;
     private TimetableManager timetableManager;
 
@@ -55,17 +59,24 @@ public class EditorFragment extends Fragment {
         // Находим элементы
         currentSemesterEditText = view.findViewById(R.id.editor_current_semester_edit_text);
         timetableLinearLayout = view.findViewById(R.id.editor_timetable_linear_layout);
+        userPhotoImageView = view.findViewById(R.id.editor_user_photo);
 
         // Создаём менеджеры
         context = getContext();
+        mainActivity = (MainActivity) requireActivity();
         if (context != null) {
             userDataManager = new UserDataManager(context);
             timetableManager = new TimetableManager(context);
         }
 
         // Загружаем фрагмент
+        initUserPhoto();
         initCurrentSemester();
         initTimetable();
+    }
+
+    private void initUserPhoto() {
+        userPhotoImageView.setOnClickListener(v -> mainActivity.loadUserFragment());
     }
 
     private void initCurrentSemester() {
