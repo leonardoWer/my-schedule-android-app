@@ -100,8 +100,16 @@ public class ScheduleRecyclerViewAdapter extends RecyclerView.Adapter<ScheduleRe
             assessmentTypeTextView.setText(lesson.getAssessmentType());
             startTimeTextView.setText(lesson.getStartTime());
             endTimeTextView.setText(lesson.getEndTime());
-            teacherTextView.setText(lesson.getTeacher());
-            placeTextView.setText(lesson.getPlace());
+            if (lesson.getTeacher().isEmpty()) {
+                teacherTextView.setVisibility(View.GONE);
+            } else {
+                teacherTextView.setText(lesson.getTeacher());
+            }
+            if (lesson.getPlace().isEmpty()) {
+                placeTextView.setVisibility(View.GONE);
+            } else {
+                placeTextView.setText(lesson.getPlace());
+            }
 
             // Добавляем
             lessonsLinearLayout.addView(lessonView);

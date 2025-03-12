@@ -121,6 +121,7 @@
                     style="@style/tittle_medium_text"
                     android:textSize="18sp"/>
                 <RelativeLayout
+                    android:id="@+id/add_lesson_date_dialog_relative_layout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="12dp"
@@ -140,17 +141,18 @@
                         android:layout_marginEnd="16dp"
                         android:textColor="@color/white"
                         android:layout_centerVertical="true"
-                        android:layout_toStartOf="@+id/add_lesson_date_dialog_image_button"
+                        android:layout_toStartOf="@+id/add_lesson_date_image_view"
                         android:layout_alignParentStart="true"/>
-                    <ImageButton
-                        android:id="@+id/add_lesson_date_dialog_image_button"
+                    <ImageView
+                        android:id="@+id/add_lesson_date_image_view"
                         android:layout_width="30dp"
                         android:layout_height="30dp"
                         android:src="@drawable/schedule"
                         android:background="@android:color/transparent"
                         android:layout_alignParentEnd="true"
                         app:tint="@color/white"
-                        android:layout_centerVertical="true"/>
+                        android:layout_centerVertical="true"
+                        android:padding="4dp"/>
                 </RelativeLayout>
 
                 <TextView
@@ -168,9 +170,9 @@
                     android:minHeight="48dp"
                     android:layout_marginHorizontal="32dp"
                     android:layout_marginTop="16dp"
-                    style="@style/rounded_input"
-                    android:background="@drawable/rounded_input"
-                    android:layout_gravity="center" />
+                    android:layout_gravity="center"
+                    android:foreground="@drawable/rounded_input"
+                    style="@style/spinner" />
             </LinearLayout>
 
 

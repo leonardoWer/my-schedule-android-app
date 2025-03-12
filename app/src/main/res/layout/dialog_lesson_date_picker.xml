@@ -18,29 +18,36 @@
             android:background="@android:color/transparent"
             android:src="@drawable/close"
             android:layout_gravity="end"
-            android:layout_margin="2dp"
+            android:layout_margin="4dp"
             app:tint="@color/white" />
     </DatePicker>
 
      <RadioGroup
          android:id="@+id/dialog_lesson_date_picker_repeat_radio_group"
          android:layout_width="wrap_content"
-         android:layout_height="wrap_content">
+         android:layout_height="wrap_content"
+         android:layout_marginHorizontal="16dp">
          <RadioButton
              android:id="@+id/dialog_lesson_date_picker_not_repeat"
              android:layout_width="wrap_content"
              android:layout_height="wrap_content"
-             android:text="@string/not_repeat"/>
+             android:text="@string/not_repeat"
+             android:buttonTint="@color/blue"
+             android:buttonTintMode="multiply"/>
          <RadioButton
              android:id="@+id/dialog_lesson_date_picker_every_repeat"
              android:layout_width="wrap_content"
              android:layout_height="wrap_content"
-             android:text="@string/every_week_repeat"/>
+             android:text="@string/every_week_repeat"
+             android:buttonTint="@color/blue"
+             android:buttonTintMode="multiply"/>
          <RadioButton
              android:id="@+id/dialog_lesson_date_picker_two_weeks_repeat"
              android:layout_width="wrap_content"
              android:layout_height="wrap_content"
-             android:text="@string/once_a_two_week"/>
+             android:text="@string/once_a_two_week"
+             android:buttonTint="@color/blue"
+             android:buttonTintMode="multiply"/>
      </RadioGroup>
 
     <Button

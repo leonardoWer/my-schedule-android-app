@@ -16,7 +16,9 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.ImageButton;
+import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -37,7 +39,7 @@ public class AddLessonFragment extends Fragment {
     private ImageButton goBackButton;
     private AutoCompleteTextView lessonNameText, assessmentTypeText;
     private TextView dateTextView;
-    private ImageButton datePickerButton;
+    private RelativeLayout datePickerDialogRelative;
     private Spinner timePickerSpinner;
     private AutoCompleteTextView teacherText, placeText;
     private Button saveButton;
@@ -70,7 +72,7 @@ public class AddLessonFragment extends Fragment {
         lessonNameText = view.findViewById(R.id.add_lesson_name_auto_text);
         assessmentTypeText = view.findViewById(R.id.add_lesson_assessment_type_auto_text);
         dateTextView = view.findViewById(R.id.add_lesson_date_text);
-        datePickerButton = view.findViewById(R.id.add_lesson_date_dialog_image_button);
+        datePickerDialogRelative = view.findViewById(R.id.add_lesson_date_dialog_relative_layout);
         timePickerSpinner = view.findViewById(R.id.add_lesson_lesson_start_time_spinner);
         teacherText = view.findViewById(R.id.add_lesson_teacher_auto_text);
         placeText = view.findViewById(R.id.add_lesson_place_auto_text);
@@ -94,7 +96,7 @@ public class AddLessonFragment extends Fragment {
 
     private void initButtons() {
         goBackButton.setOnClickListener(v -> closeFragment());
-        datePickerButton.setOnClickListener(v -> showDatePickerDialog());
+        datePickerDialogRelative.setOnClickListener(v -> showDatePickerDialog());
         saveButton.setOnClickListener(v -> addLesson());
     }
 
@@ -147,6 +149,8 @@ public class AddLessonFragment extends Fragment {
         // Находим элементы
         DatePicker datePicker = dialogView.findViewById(R.id.dialog_lesson_date_picker);
         RadioGroup repeatRadioGroup = dialogView.findViewById(R.id.dialog_lesson_date_picker_repeat_radio_group);
+        RadioButton notRadioButton = dialogView.findViewById(R.id.dialog_lesson_date_picker_not_repeat);
+        notRadioButton.setChecked(true);
         ImageButton closeButton = dialogView.findViewById(R.id.dialog_lesson_close_image_button);
         Button saveButton = dialogView.findViewById(R.id.dialog_lesson_save_button);
 
