@@ -118,13 +118,28 @@
                 android:padding="16dp"
                 android:elevation="4dp">
 
-                <TextView
-                    android:layout_width="wrap_content"
+                <RelativeLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Преподаватели"
-                    style="@style/tittle_medium_text"
-                    android:textSize="18sp"
-                    android:layout_marginTop="8dp"/>
+                    android:orientation="horizontal">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/teachers"
+                        style="@style/tittle_medium_text"
+                        android:textSize="18sp"
+                        android:layout_marginTop="8dp"/>
+                    <ImageButton
+                        android:id="@+id/editor_add_teacher_image_button"
+                        android:layout_width="48dp"
+                        android:layout_height="48dp"
+                        android:background="@android:color/transparent"
+                        android:layout_alignParentEnd="true"
+                        android:contentDescription="@string/add_teacher"
+                        android:src="@drawable/add_teacher"
+                        app:tint="@color/blue"/>
+                </RelativeLayout>
+
 
             </LinearLayout>
 
@@ -139,17 +154,32 @@
                 android:padding="16dp"
                 android:elevation="4dp">
 
-                <TextView
-                    android:layout_width="wrap_content"
+                <RelativeLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Места обучения"
-                    style="@style/tittle_medium_text"
-                    android:textSize="18sp"
-                    android:layout_marginTop="8dp"/>
+                    android:orientation="horizontal">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Места обучения"
+                        style="@style/tittle_medium_text"
+                        android:textSize="18sp"
+                        android:layout_marginTop="8dp"/>
+                    <ImageButton
+                        android:id="@+id/editor_add_place_image_button"
+                        android:layout_width="48dp"
+                        android:layout_height="48dp"
+                        android:background="@android:color/transparent"
+                        android:layout_alignParentEnd="true"
+                        android:contentDescription="@string/add_teacher"
+                        android:src="@drawable/add_place"
+                        app:tint="@color/blue"/>
+                </RelativeLayout>
 
             </LinearLayout>
 
             <Button
+                android:id="@+id/editor_clear_schedule"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:minHeight="48dp"
@@ -157,7 +187,7 @@
                 style="@style/blue_button"
                 android:layout_marginHorizontal="16dp"
                 android:layout_marginTop="16dp"
-                android:text="Очистить всё"/>
+                android:text="Очистить расписание"/>
 
         </LinearLayout>
     </ScrollView>
