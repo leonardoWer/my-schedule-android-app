@@ -130,6 +130,10 @@ public class MainActivity extends AppCompatActivity {
         return schedule;
     }
 
+    public CalendarDay getTodaySchedule() {
+        return schedule.get(0);
+    }
+
     public boolean isScheduleLoaded() {
         return scheduleLoaded;
     }
