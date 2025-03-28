@@ -1,12 +1,30 @@
 <resources>
     <string name="app_name">my.schedule</string>
 
+    <string name="hello">Здравствуйте</string>
+    <string name="hello_description">Перед началом давайте познакомимся</string>
+    <string name="your_name">Ваше имя</string>
+    <string name="what_is_your_course">На каком вы сейчас курсе?</string>
+    <string name="course_number">Номер курса</string>
+    <string name="start">Начать</string>
+    <string name="save">Сохранить</string>
+    <string name="delete">Удалить</string>
+    <string name="edit">Редактировать</string>
+
     <string name="schedule">Расписание</string>
     <string name="lessons">Предметы</string>
     <string name="editor">Редактор</string>
     <string name="actual">Актуальное</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+
+    <string name="not_repeat">Не повторять</string>
+    <string name="every_week_repeat">Каждую неделю</string>
+    <string name="once_a_two_week">Раз в две недели</string>
+
+    <string name="persons">Персоны</string>
+    <string name="add_person">Добавить персону</string>
+    <string name="places">Места</string>
+    <string name="add_place">Добавить место</string>
 
 
 </resources>

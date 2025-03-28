@@ -7,10 +7,6 @@
             <corners android:radius="14dp"/>
             <stroke android:color="@color/blue" android:width="2dp"/>
         </shape>
-        <shape android:shape="rectangle">
-            <corners android:radius="18dp"/>
-            <stroke android:color="@color/fio" android:width="2dp"/>
-        </shape>
     </item>
 
     <!--  Не выделенное состояние  -->

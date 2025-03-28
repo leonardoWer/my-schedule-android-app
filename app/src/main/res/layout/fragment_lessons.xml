@@ -5,19 +5,50 @@
     android:layout_height="match_parent"
     tools:context=".lessons.fragments.LessonsFragment">
 
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:scrollbars="none">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingBottom="16dp">
+
+            <TextView
+                android:id="@+id/lesson_fragment_lessons_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/lessons"
+                style="@style/tittle_bold_text"
+                android:textSize="28sp"
+                android:layout_marginHorizontal="16dp"
+                android:layout_marginTop="8dp"/>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/lesson_fragment_recycler_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"/>
+
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="match_parent">
 
-        <TextView
-            android:id="@+id/schedule_fragment_schedule_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/lessons"
-            style="@style/tittle_bold_text"
-            android:textSize="26sp"
-            android:layout_marginHorizontal="16dp"
-            android:layout_marginTop="8dp"/>
+        <Button
+            android:id="@+id/lesson_fragment_add_lesson_button"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:padding="4dp"
+            style="@style/blue_button"
+            android:text="+"
+            android:textSize="18sp"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
+            android:layout_margin="16dp"/>
     </RelativeLayout>
 
 </FrameLayout>
