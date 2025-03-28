@@ -64,7 +64,7 @@ public class ScheduleFragment extends Fragment {
 
     private void initRecyclerView() {
         scheduleRecyclerView.setLayoutManager(new LinearLayoutManager(context));
-        scheduleRecyclerViewAdapter = new ScheduleRecyclerViewAdapter(new ArrayList<>());
+        scheduleRecyclerViewAdapter = new ScheduleRecyclerViewAdapter(context, new ArrayList<>());
         scheduleRecyclerView.setAdapter(scheduleRecyclerViewAdapter);
     }
 

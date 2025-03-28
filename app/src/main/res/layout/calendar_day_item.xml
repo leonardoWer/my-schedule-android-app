@@ -4,7 +4,7 @@
     android:layout_height="wrap_content"
     android:orientation="vertical"
     android:layout_marginHorizontal="16dp"
-    android:layout_marginTop="16dp">
+    android:layout_marginTop="8dp">
 
     <TextView
         android:id="@+id/calendar_day_day_text"
@@ -53,10 +53,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:layout_marginTop="8dp"
         android:layout_marginHorizontal="16dp"
         android:background="@drawable/rounded_button"
-        android:backgroundTint="@color/white">
+        android:backgroundTint="@color/white"
+        android:layout_marginTop="4dp">
     </LinearLayout>
 
 </LinearLayout>

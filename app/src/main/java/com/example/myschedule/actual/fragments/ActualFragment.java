@@ -22,6 +22,7 @@ import com.example.myschedule.schedule.items.CalendarDay;
 import com.example.myschedule.schedule.items.Lesson;
 import com.example.myschedule.user.UserDataManager;
 import com.example.myschedule.utils.DateUtils;
+import com.example.myschedule.utils.LayoutUtils;
 import com.example.myschedule.utils.StringUtils;
 
 import java.util.Calendar;
@@ -130,6 +131,8 @@ public class ActualFragment extends Fragment {
         assessmentTypeTextView.setText(lesson.getAssessmentType());
         startTimeTextView.setText(lesson.getStartTime());
         endTimeTextView.setText(lesson.getEndTime());
+
+        // Убираем пустые блоки
         if (lesson.getTeacher().isEmpty()) {
             teacherTextView.setVisibility(View.GONE);
         } else {
@@ -142,17 +145,7 @@ public class ActualFragment extends Fragment {
         }
 
         // Отступы
-        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT,
-                LinearLayout.LayoutParams.WRAP_CONTENT
-        );
-        int margin = (int) TypedValue.applyDimension(
-                TypedValue.COMPLEX_UNIT_DIP,
-                8,
-                context.getResources().getDisplayMetrics()
-        );
-        params.setMargins(0, 0, 0, margin);
-        lessonView.setLayoutParams(params);
+        LayoutUtils.setMargins(context, lessonView, 0, 8, 0, 8);
 
         // Добавляем
         lessonsLinearLayout.addView(lessonView);

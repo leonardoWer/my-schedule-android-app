@@ -1,5 +1,6 @@
 package com.example.myschedule.schedule.adapters;
 
+import android.content.Context;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,6 +15,7 @@ import com.example.myschedule.R;
 import com.example.myschedule.schedule.items.CalendarDay;
 import com.example.myschedule.schedule.items.Lesson;
 import com.example.myschedule.utils.DateUtils;
+import com.example.myschedule.utils.LayoutUtils;
 import com.example.myschedule.utils.StringUtils;
 
 import java.util.List;
@@ -21,8 +23,10 @@ import java.util.List;
 public class ScheduleRecyclerViewAdapter extends RecyclerView.Adapter<ScheduleRecyclerViewAdapter.ViewHolder> {
 
     private List<CalendarDay> calendarDays;
+    private Context context;
 
-    public ScheduleRecyclerViewAdapter(List<CalendarDay> calendarDays) {
+    public ScheduleRecyclerViewAdapter(Context context, List<CalendarDay> calendarDays) {
+        this.context = context;
         this.calendarDays = calendarDays;
     }
 
@@ -36,7 +40,7 @@ public class ScheduleRecyclerViewAdapter extends RecyclerView.Adapter<ScheduleRe
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         CalendarDay calendarDay = calendarDays.get(position);
-        holder.bind(calendarDay);
+        holder.bind(calendarDay, context);
     }
 
     @Override
@@ -65,7 +69,7 @@ public class ScheduleRecyclerViewAdapter extends RecyclerView.Adapter<ScheduleRe
             lessonsLinearLayout = itemView.findViewById(R.id.calendar_day_lessons_linear_layout);
         }
 
-        public void bind(CalendarDay calendarDay) {
+        public void bind(CalendarDay calendarDay, Context context) {
             // Устанавливаем данные для CalendarDay
             dayOfWeekNameTextView.setText(calendarDay.getDayOfWeek());
             dateTextView.setText(DateUtils.getDateAndMonthNameFromLong(calendarDay.getDate()));
@@ -76,14 +80,14 @@ public class ScheduleRecyclerViewAdapter extends RecyclerView.Adapter<ScheduleRe
             List<Lesson> lessons = calendarDay.getLessons();
             if (!lessons.isEmpty()) {
                 for (Lesson lesson : lessons) {
-                    addLessonView(lesson);
+                    addLessonView(lesson, context);
                 }
             } else {
                 lessonCountTextView.setText("пар нет");
             }
         }
 
-        private void addLessonView(Lesson lesson) {
+        private void addLessonView(Lesson lesson, Context context) {
             //  Инфлейтим разметку lesson_item.xml
             View lessonView = LayoutInflater.from(lessonsLinearLayout.getContext()).inflate(R.layout.lesson_item, null);
 
@@ -100,6 +104,8 @@ public class ScheduleRecyclerViewAdapter extends RecyclerView.Adapter<ScheduleRe
             assessmentTypeTextView.setText(lesson.getAssessmentType());
             startTimeTextView.setText(lesson.getStartTime());
             endTimeTextView.setText(lesson.getEndTime());
+
+            // Если пустое, скрываем
             if (lesson.getTeacher().isEmpty()) {
                 teacherTextView.setVisibility(View.GONE);
             } else {
@@ -110,6 +116,9 @@ public class ScheduleRecyclerViewAdapter extends RecyclerView.Adapter<ScheduleRe
             } else {
                 placeTextView.setText(lesson.getPlace());
             }
+
+            // Отступы
+            LayoutUtils.setMargins(context, lessonView, 0, 8, 0, 8);
 
             // Добавляем
             lessonsLinearLayout.addView(lessonView);
