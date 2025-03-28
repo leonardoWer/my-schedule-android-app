@@ -22,15 +22,18 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.myschedule.MainActivity;
 import com.example.myschedule.R;
 import com.example.myschedule.editor.managers.PersonsAndPlacesManager;
 import com.example.myschedule.editor.managers.TimetableManager;
+import com.example.myschedule.lessons.LessonsManager;
 import com.example.myschedule.user.UserDataManager;
 import com.example.myschedule.utils.DateUtils;
 import com.example.myschedule.utils.LayoutUtils;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
@@ -42,13 +45,16 @@ public class EditorFragment extends Fragment {
     private LinearLayout timetableLinearLayout;
     private LinearLayout personsLinearLayout, placesLinearLayout;
     private ImageButton addPersonImageButton, addPlaceImageButton;
+    private Button deleteScheduleButton, deleteLessonsButton;
 
     private Context context;
     private MainActivity mainActivity;
     private UserDataManager userDataManager;
     private TimetableManager timetableManager;
     private PersonsAndPlacesManager personsAndPlacesManager;
+    private LessonsManager lessonsManager;
 
+    private int currentSemester;
     private HashMap<String, String> timetable = new HashMap<>();
     private List<String> persons, places;
 
@@ -68,7 +74,22 @@ public class EditorFragment extends Fragment {
         placesLinearLayout = view.findViewById(R.id.editor_places_linear_layout);
         addPersonImageButton = view.findViewById(R.id.editor_add_person_image_button);
         addPlaceImageButton = view.findViewById(R.id.editor_add_place_image_button);
+        deleteScheduleButton = view.findViewById(R.id.editor_delete_schedule);
+        deleteLessonsButton = view.findViewById(R.id.editor_delete_disciplines);
 
+        // Загружаем фрагмент
+        initEditorFragment();
+    }
+
+    private void initEditorFragment() {
+        initManagers();
+        initCurrentSemester();
+        initTimetable();
+        initPersonsAndPlaces();
+        initDeleteButtons();
+    }
+
+    private void initManagers() {
         // Создаём менеджеры
         context = getContext();
         mainActivity = (MainActivity) requireActivity();
@@ -76,21 +97,13 @@ public class EditorFragment extends Fragment {
             userDataManager = new UserDataManager(context);
             timetableManager = new TimetableManager(context);
             personsAndPlacesManager = new PersonsAndPlacesManager(context);
+            lessonsManager = new LessonsManager(context);
         }
-
-        // Загружаем фрагмент
-        initEditorFragment();
-    }
-
-    private void initEditorFragment() {
-        initCurrentSemester();
-        initTimetable();
-        initPersonsAndPlaces();
     }
 
     private void initCurrentSemester() {
         // Получаем значения
-        int currentSemester = userDataManager.getUserCurrentSemester();
+        currentSemester = userDataManager.getUserCurrentSemester();
 
         // Устанавливаем значения
         currentSemesterEditText.setText(String.valueOf(currentSemester));
@@ -124,6 +137,33 @@ public class EditorFragment extends Fragment {
         // Устанавливаем обработчики
         addPersonImageButton.setOnClickListener(v -> showAddPersonsAndPlacesDialog("Добавить персону", "persons"));
         addPlaceImageButton.setOnClickListener(v -> showAddPersonsAndPlacesDialog("Добавить место", "places"));
+    }
+
+    private void initDeleteButtons() {
+        deleteScheduleButton.setOnClickListener(v -> showConfirmationDialog("Вы уверены, что хотите удалить расписание за текущий семестр?", this::clearScheduleCurrentSemester));
+        deleteLessonsButton.setOnClickListener(v -> showConfirmationDialog("Вы уверены, что хотите удалить все предметы за текущий семестр?", this::clearLessonsCurrentSemester));
+    }
+
+    private void showConfirmationDialog(String message, Runnable onConfirmAction) {
+        new AlertDialog.Builder(context)
+                .setTitle("Внимание!")
+                .setMessage(message)
+                .setPositiveButton("Да", (dialog, which) -> {
+                    onConfirmAction.run();
+                    dialog.dismiss();
+                })
+                .setNegativeButton("Отмена", (dialog, which) -> dialog.cancel())
+                .setIcon(android.R.drawable.ic_dialog_alert)
+                .show();
+    }
+
+    private void clearScheduleCurrentSemester() {
+        Toast.makeText(context, "Расписание за текущий семестр успешно удалено", Toast.LENGTH_SHORT).show();
+    }
+
+    private void clearLessonsCurrentSemester() {
+        lessonsManager.setDisciplinesOnSemester(currentSemester, new ArrayList<>());
+        Toast.makeText(context, "Все предметы успешно удалены", Toast.LENGTH_SHORT).show();
     }
 
     private void loadPersonsAndPlaces(List<String> lst, LinearLayout parent, String personsOrPlaces) {

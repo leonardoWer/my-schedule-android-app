@@ -172,16 +172,37 @@
 
             </LinearLayout>
 
-            <Button
-                android:id="@+id/editor_clear_schedule"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:minHeight="48dp"
-                android:background="@drawable/rounded_button"
-                style="@style/blue_button"
-                android:layout_marginHorizontal="16dp"
+                android:orientation="horizontal"
+                android:layout_weight="2"
                 android:layout_marginTop="16dp"
-                android:text="Очистить расписание"/>
+                android:layout_marginHorizontal="16dp">
+
+                <Button
+                    android:id="@+id/editor_delete_schedule"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:minHeight="48dp"
+                    android:background="@drawable/rounded_button"
+                    style="@style/blue_button"
+                    android:text="Удалить расписание"
+                    android:layout_weight="1"
+                    android:layout_marginEnd="8dp"/>
+
+                <Button
+                    android:id="@+id/editor_delete_disciplines"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:minHeight="48dp"
+                    android:background="@drawable/rounded_button"
+                    style="@style/blue_button"
+                    android:text="Удалить предметы"
+                    android:layout_weight="1"
+                    android:layout_marginStart="8dp"/>
+            </LinearLayout>
+
 
         </LinearLayout>
     </ScrollView>
