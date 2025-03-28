@@ -12,10 +12,7 @@ import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.util.Log;
-import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,7 +22,6 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.TimePicker;
 
 import com.example.myschedule.MainActivity;
 import com.example.myschedule.R;
@@ -34,8 +30,6 @@ import com.example.myschedule.editor.managers.TimetableManager;
 import com.example.myschedule.user.UserDataManager;
 import com.example.myschedule.utils.DateUtils;
 import com.example.myschedule.utils.LayoutUtils;
-
-import org.w3c.dom.Text;
 
 import java.util.Calendar;
 import java.util.HashMap;
