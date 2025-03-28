@@ -21,9 +21,9 @@
     <string name="every_week_repeat">Каждую неделю</string>
     <string name="once_a_two_week">Раз в две недели</string>
 
-    <string name="teachers">Преподаватели</string>
-    <string name="add_teacher">Добавить преподавателя</string>
-    <string name="places">Места обучение</string>
+    <string name="persons">Персоны</string>
+    <string name="add_person">Добавить персону</string>
+    <string name="places">Места</string>
     <string name="add_place">Добавить место</string>
 
 

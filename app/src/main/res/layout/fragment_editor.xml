@@ -108,21 +108,26 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/teachers"
+                        android:text="@string/persons"
                         style="@style/tittle_medium_text"
                         android:textSize="18sp"
                         android:layout_marginTop="8dp"/>
                     <ImageButton
-                        android:id="@+id/editor_add_teacher_image_button"
+                        android:id="@+id/editor_add_person_image_button"
                         android:layout_width="48dp"
                         android:layout_height="48dp"
                         android:background="@android:color/transparent"
                         android:layout_alignParentEnd="true"
-                        android:contentDescription="@string/add_teacher"
+                        android:contentDescription="@string/add_person"
                         android:src="@drawable/add_teacher"
                         app:tint="@color/blue"/>
                 </RelativeLayout>
 
+                <LinearLayout
+                    android:id="@+id/editor_persons_linear_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"/>
 
             </LinearLayout>
 
@@ -144,7 +149,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Места обучения"
+                        android:text="@string/places"
                         style="@style/tittle_medium_text"
                         android:textSize="18sp"
                         android:layout_marginTop="8dp"/>
@@ -154,10 +159,16 @@
                         android:layout_height="48dp"
                         android:background="@android:color/transparent"
                         android:layout_alignParentEnd="true"
-                        android:contentDescription="@string/add_teacher"
+                        android:contentDescription="@string/add_place"
                         android:src="@drawable/add_place"
                         app:tint="@color/blue"/>
                 </RelativeLayout>
+
+                <LinearLayout
+                    android:id="@+id/editor_places_linear_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"/>
 
             </LinearLayout>
 
