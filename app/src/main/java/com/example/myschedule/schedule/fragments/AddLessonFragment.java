@@ -26,6 +26,7 @@ import android.widget.TextView;
 import com.example.myschedule.MainActivity;
 import com.example.myschedule.R;
 import com.example.myschedule.editor.items.TimetableSpinnerItem;
+import com.example.myschedule.editor.managers.PersonsAndPlacesManager;
 import com.example.myschedule.editor.managers.TimetableManager;
 import com.example.myschedule.lessons.LessonsManager;
 import com.example.myschedule.lessons.items.Discipline;
@@ -46,23 +47,24 @@ public class AddLessonFragment extends Fragment {
     private TextView dateTextView;
     private RelativeLayout datePickerDialogRelative;
     private Spinner timePickerSpinner;
-    private AutoCompleteTextView teacherText, placeText;
+    private AutoCompleteTextView personAutoText, placeAutoText;
     private Button saveButton;
 
     private TimetableSpinnerAdapter timetableSpinnerAdapter;
-
-    private String lessonName, lessonAssessmentType;
-    private long lessonDate = -1;
-    private Lesson.RepeatType lessonRepeatType = Lesson.RepeatType.NOT;
-    private String lessonStartTime, lessonEndTime;
-    private String teacher, place;
 
     private Context context;
     private MainActivity mainActivity;
     private ScheduleManager scheduleManager;
     private TimetableManager timetableManager;
     private LessonsManager lessonsManager;
+    private PersonsAndPlacesManager personsAndPlacesManager;
+
     private int currentSemester;
+    private String lessonName, lessonAssessmentType;
+    private long lessonDate = -1;
+    private Lesson.RepeatType lessonRepeatType = Lesson.RepeatType.NOT;
+    private String lessonStartTime, lessonEndTime;
+    private String teacher, place;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -75,15 +77,24 @@ public class AddLessonFragment extends Fragment {
 
         // Находим элементы
         goBackButton = view.findViewById(R.id.go_back_button);
+
         lessonNameAutoText = view.findViewById(R.id.add_lesson_name_auto_text);
         assessmentTypeAutoText = view.findViewById(R.id.add_lesson_assessment_type_auto_text);
+
         dateTextView = view.findViewById(R.id.add_lesson_date_text);
         datePickerDialogRelative = view.findViewById(R.id.add_lesson_date_dialog_relative_layout);
         timePickerSpinner = view.findViewById(R.id.add_lesson_lesson_start_time_spinner);
-        teacherText = view.findViewById(R.id.add_lesson_teacher_auto_text);
-        placeText = view.findViewById(R.id.add_lesson_place_auto_text);
+
+        personAutoText = view.findViewById(R.id.add_lesson_teacher_auto_text);
+        placeAutoText = view.findViewById(R.id.add_lesson_place_auto_text);
+
         saveButton = view.findViewById(R.id.add_lesson_save_button);
 
+        // Загружаем страницу
+        initAddLessonFragment();
+    }
+
+    private void initAddLessonFragment() {
         // Объявляем контекст
         initManagers();
 
@@ -93,12 +104,16 @@ public class AddLessonFragment extends Fragment {
     }
 
     private void initManagers() {
+        // Получаем контекст
         context = requireContext();
         mainActivity = (MainActivity) requireActivity();
+        currentSemester = mainActivity.getCurrentSemesterNumber();
+
+        // Получаем менеджеры
         scheduleManager = new ScheduleManager(context);
         timetableManager = new TimetableManager(context);
         lessonsManager = new LessonsManager(context);
-        currentSemester = mainActivity.getCurrentSemesterNumber();
+        personsAndPlacesManager = new PersonsAndPlacesManager(context);
     }
 
     private void initButtons() {
@@ -130,6 +145,14 @@ public class AddLessonFragment extends Fragment {
         String[] assessmentTypes = {"Лекция", "Практика", "Семинар", "Спорт"};
         ArrayAdapter<String> assessmentTypeAdapter = new ArrayAdapter<>(context, android.R.layout.simple_dropdown_item_1line, assessmentTypes);
         assessmentTypeAutoText.setAdapter(assessmentTypeAdapter);
+
+        // Адаптер для персон
+        List<String> persons = personsAndPlacesManager.getPersons();
+        personAutoText.setAdapter(new ArrayAdapter<String>(context, android.R.layout.simple_dropdown_item_1line, persons));
+
+        // Адаптер для мест
+        List<String> places = personsAndPlacesManager.getPlaces();
+        placeAutoText.setAdapter(new ArrayAdapter<String>(context, android.R.layout.simple_dropdown_item_1line, places));
     }
 
     private void addLesson() {
@@ -141,8 +164,8 @@ public class AddLessonFragment extends Fragment {
         lessonStartTime = getLessonStartTime();
         lessonEndTime = DateUtils.getEndLessonTime(lessonStartTime);
 
-        teacher = teacherText.getText().toString();
-        place = placeText.getText().toString();
+        teacher = personAutoText.getText().toString();
+        place = placeAutoText.getText().toString();
 
         // Добавляем новый предмет если нет ошибок
         if (checkNotErrorsInData()) {
@@ -167,7 +190,7 @@ public class AddLessonFragment extends Fragment {
     }
 
     private void showDatePickerDialog() {
-        AlertDialog.Builder builder  = new AlertDialog.Builder(context);
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
         LayoutInflater inflater = LayoutInflater.from(context);
         View dialogView = inflater.inflate(R.layout.dialog_lesson_date_picker, null);
 
