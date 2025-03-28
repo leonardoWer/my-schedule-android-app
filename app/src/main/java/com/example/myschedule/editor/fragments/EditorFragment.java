@@ -59,7 +59,6 @@ public class EditorFragment extends Fragment {
         // Находим элементы
         currentSemesterEditText = view.findViewById(R.id.editor_current_semester_edit_text);
         timetableLinearLayout = view.findViewById(R.id.editor_timetable_linear_layout);
-        userPhotoImageView = view.findViewById(R.id.editor_user_photo);
 
         // Создаём менеджеры
         context = getContext();
@@ -70,13 +69,8 @@ public class EditorFragment extends Fragment {
         }
 
         // Загружаем фрагмент
-        initUserPhoto();
         initCurrentSemester();
         initTimetable();
-    }
-
-    private void initUserPhoto() {
-        userPhotoImageView.setOnClickListener(v -> mainActivity.loadUserFragment());
     }
 
     private void initCurrentSemester() {

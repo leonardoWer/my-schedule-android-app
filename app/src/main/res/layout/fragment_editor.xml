@@ -31,23 +31,6 @@
                     android:layout_marginHorizontal="16dp"
                     android:layout_marginTop="8dp"/>
 
-                <androidx.cardview.widget.CardView
-                    android:layout_width="48dp"
-                    android:layout_height="48dp"
-                    app:cardCornerRadius="14dp"
-                    android:elevation="4dp"
-                    android:layout_alignParentEnd="true"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginHorizontal="16dp"
-                    android:layout_marginBottom="2dp">
-                    <ImageView
-                        android:id="@+id/editor_user_photo"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:contentDescription="@string/editor"
-                        android:src="@color/blue"
-                        android:scaleType="centerCrop"/>
-                </androidx.cardview.widget.CardView>
             </RelativeLayout>
 
             <LinearLayout
