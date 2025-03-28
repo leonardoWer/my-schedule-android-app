@@ -12,6 +12,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.DatePicker;
@@ -26,18 +27,22 @@ import com.example.myschedule.MainActivity;
 import com.example.myschedule.R;
 import com.example.myschedule.editor.items.TimetableSpinnerItem;
 import com.example.myschedule.editor.managers.TimetableManager;
+import com.example.myschedule.lessons.LessonsManager;
+import com.example.myschedule.lessons.items.Discipline;
 import com.example.myschedule.schedule.ScheduleManager;
 import com.example.myschedule.schedule.adapters.TimetableSpinnerAdapter;
 import com.example.myschedule.schedule.items.Lesson;
 import com.example.myschedule.utils.DateUtils;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class AddLessonFragment extends Fragment {
 
     private ImageButton goBackButton;
-    private AutoCompleteTextView lessonNameText, assessmentTypeText;
+    private AutoCompleteTextView lessonNameAutoText, assessmentTypeAutoText;
     private TextView dateTextView;
     private RelativeLayout datePickerDialogRelative;
     private Spinner timePickerSpinner;
@@ -56,6 +61,7 @@ public class AddLessonFragment extends Fragment {
     private MainActivity mainActivity;
     private ScheduleManager scheduleManager;
     private TimetableManager timetableManager;
+    private LessonsManager lessonsManager;
     private int currentSemester;
 
     @Override
@@ -69,8 +75,8 @@ public class AddLessonFragment extends Fragment {
 
         // Находим элементы
         goBackButton = view.findViewById(R.id.go_back_button);
-        lessonNameText = view.findViewById(R.id.add_lesson_name_auto_text);
-        assessmentTypeText = view.findViewById(R.id.add_lesson_assessment_type_auto_text);
+        lessonNameAutoText = view.findViewById(R.id.add_lesson_name_auto_text);
+        assessmentTypeAutoText = view.findViewById(R.id.add_lesson_assessment_type_auto_text);
         dateTextView = view.findViewById(R.id.add_lesson_date_text);
         datePickerDialogRelative = view.findViewById(R.id.add_lesson_date_dialog_relative_layout);
         timePickerSpinner = view.findViewById(R.id.add_lesson_lesson_start_time_spinner);
@@ -91,6 +97,7 @@ public class AddLessonFragment extends Fragment {
         mainActivity = (MainActivity) requireActivity();
         scheduleManager = new ScheduleManager(context);
         timetableManager = new TimetableManager(context);
+        lessonsManager = new LessonsManager(context);
         currentSemester = mainActivity.getCurrentSemesterNumber();
     }
 
@@ -105,12 +112,30 @@ public class AddLessonFragment extends Fragment {
         List<TimetableSpinnerItem> timetable = timetableManager.getTimetableSpinnerItems();
         timetableSpinnerAdapter = new TimetableSpinnerAdapter(context, timetable);
         timePickerSpinner.setAdapter(timetableSpinnerAdapter);
+
+        // Адаптер для предметов
+        List<Discipline> disciplines = lessonsManager.getDisciplinesOnSemester(currentSemester);
+        if (!disciplines.isEmpty()) {
+            List<String> lessonNames = disciplines.stream()
+                    .map(Discipline::getName)  // Преобразуем Discipline в имя (String)
+                    .distinct()            // Оставляем только уникальные значения
+                    .collect(Collectors.toList()); // Собираем в List
+
+            // Создаём адаптер
+            ArrayAdapter<String> lessonNameAdapter = new ArrayAdapter<>(context, android.R.layout.simple_dropdown_item_1line, lessonNames);
+            lessonNameAutoText.setAdapter(lessonNameAdapter);
+        }
+
+        // Адаптер для типа занятия
+        String[] assessmentTypes = {"Лекция", "Практика", "Семинар", "Спорт"};
+        ArrayAdapter<String> assessmentTypeAdapter = new ArrayAdapter<>(context, android.R.layout.simple_dropdown_item_1line, assessmentTypes);
+        assessmentTypeAutoText.setAdapter(assessmentTypeAdapter);
     }
 
     private void addLesson() {
         // Получаем данные
-        lessonName = lessonNameText.getText().toString();
-        lessonAssessmentType = assessmentTypeText.getText().toString();
+        lessonName = lessonNameAutoText.getText().toString();
+        lessonAssessmentType = assessmentTypeAutoText.getText().toString();
 
         // Временно
         lessonStartTime = getLessonStartTime();
@@ -203,11 +228,11 @@ public class AddLessonFragment extends Fragment {
     private boolean checkNotErrorsInData() {
         boolean haveErrors = false;
         if (lessonName.isEmpty()) {
-            lessonNameText.setError("Введите название пары");
+            lessonNameAutoText.setError("Введите название пары");
             haveErrors = true;
         }
         if (lessonAssessmentType.isEmpty()) {
-            assessmentTypeText.setError("Выберите тип занятия");
+            assessmentTypeAutoText.setError("Выберите тип занятия");
             haveErrors = true;
         }
         if (lessonDate == -1) {
