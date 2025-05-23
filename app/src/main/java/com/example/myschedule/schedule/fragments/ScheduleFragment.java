@@ -10,6 +10,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.os.Handler;
 import android.os.Looper;
@@ -28,10 +29,12 @@ import java.util.List;
 
 public class ScheduleFragment extends Fragment {
 
+    private SwipeRefreshLayout swipeRefreshLayout;
     private RecyclerView scheduleRecyclerView;
     private ImageButton addLessonButton;
 
     private ScheduleRecyclerViewAdapter scheduleRecyclerViewAdapter;
+    private boolean isActualScheduleDisplayed = false;
 
     private Context context;
     private MainActivity mainActivity;
@@ -47,6 +50,7 @@ public class ScheduleFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         // Находим элементы
+        swipeRefreshLayout = view.findViewById(R.id.schedule_fragment_swipe_refresh_layout);
         scheduleRecyclerView = view.findViewById(R.id.schedule_fragment_recycler_view);
         addLessonButton = view.findViewById(R.id.schedule_fragment_add_lesson_image_button);
 
@@ -59,27 +63,41 @@ public class ScheduleFragment extends Fragment {
 
         // Загружаем страницу
         initRecyclerView();
-        loadScheduleWhenReady();
+        initScheduleWhenReady();
     }
 
     private void initRecyclerView() {
+        // Адаптер длч RecyclerView
         scheduleRecyclerView.setLayoutManager(new LinearLayoutManager(context));
         scheduleRecyclerViewAdapter = new ScheduleRecyclerViewAdapter(context, new ArrayList<>());
         scheduleRecyclerView.setAdapter(scheduleRecyclerViewAdapter);
+
+        // Адаптер для обновления
+        swipeRefreshLayout.setOnRefreshListener(this::updateSchedule);
     }
 
-    private void loadScheduleWhenReady() {
+    private void initScheduleWhenReady() {
         if (mainActivity.isScheduleLoaded()) {
             schedule = mainActivity.getSchedule();
             displaySchedule();
         } else {
-            new Handler(Looper.getMainLooper()).postDelayed(this::loadScheduleWhenReady, 500); // Пытемся загрузить расписание каждые 500 мс
+            isActualScheduleDisplayed = false;
+            new Handler(Looper.getMainLooper()).postDelayed(this::initScheduleWhenReady, 500); // Пытемся загрузить расписание каждые 500 мс
+        }
+    }
+
+    private void updateSchedule() {
+        isActualScheduleDisplayed = false;
+        initScheduleWhenReady();
+        if (isActualScheduleDisplayed) {
+            swipeRefreshLayout.setRefreshing(false);
         }
     }
 
     private void displaySchedule() {
         requireActivity().runOnUiThread(() -> {
             scheduleRecyclerViewAdapter.setCalendarDays(schedule);
+            isActualScheduleDisplayed = true;
         });
     }
 }

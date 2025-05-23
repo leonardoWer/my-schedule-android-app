@@ -83,6 +83,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void loadSchedule() {
+        scheduleLoaded = false;
+
         long startScheduleDate = getStartScheduleDate();
         scheduleManager.getSchedule(currentSemester.getId(), startScheduleDate, currentSemester.getEndDate(), new ScheduleManager.ScheduleCallback() {
             @Override
@@ -101,18 +103,33 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    public void refreshSchedule() {
-        if (currentSemester != null) {
-            loadSchedule();
-        }
-    }
-
     private long getStartScheduleDate() {
         long todayDate = DateUtils.getCurrentDateInMillis();
         if (todayDate > currentSemester.getStartDate() && todayDate <= currentSemester.getEndDate()) {
             return todayDate;
         }
         return currentSemester.getStartDate();
+    }
+
+    // Методы для других страниц
+    public List<CalendarDay> getSchedule() {
+        return schedule;
+    }
+
+    public CalendarDay getTodaySchedule() {
+        return schedule.get(0);
+    }
+
+    public void refreshSchedule() {
+        if (currentSemester != null) {
+            loadSchedule();
+        } else {
+            Log.w("MainActivity", "Error with refreshing schedule: current semester = 0");
+        }
+    }
+
+    public boolean isScheduleLoaded() {
+        return scheduleLoaded;
     }
 
     public Semester getCurrentSemester() {
@@ -123,17 +140,14 @@ public class MainActivity extends AppCompatActivity {
         return currentSemester.getId();
     }
 
-    public List<CalendarDay> getSchedule() {
-        return schedule;
+    public long getCurrentSemesterStartDate() {
+        return currentSemester.getStartDate();
     }
 
-    public CalendarDay getTodaySchedule() {
-        return schedule.get(0);
+    public long getCurrentSemesterEndDate() {
+        return currentSemester.getEndDate();
     }
 
-    public boolean isScheduleLoaded() {
-        return scheduleLoaded;
-    }
 
     private void initBottomMenu() {
         // Устанавливаем страницу по умолчанию

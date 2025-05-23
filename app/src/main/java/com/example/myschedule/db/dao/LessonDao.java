@@ -16,6 +16,8 @@ public interface LessonDao {
 
     @Insert
     void insert(Lesson lesson);
+    @Insert
+    void insertAll(List<Lesson> lessons);
 
     @Delete
     void delete(Lesson lesson);

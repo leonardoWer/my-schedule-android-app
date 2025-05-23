@@ -26,6 +26,8 @@ public class ScheduleManager {
         db = Room.databaseBuilder(context.getApplicationContext(), AppDatabase.class, "schedule-db").build();
     }
 
+    // Расписание
+
     public interface ScheduleCallback {
         void onScheduleLoaded(List<CalendarDay> schedule);
         void onError(String error);
@@ -41,7 +43,7 @@ public class ScheduleManager {
                     long calendarDayDate = calendarDay.getDate();
                     for (Lesson lesson : allLessons) {
                         if (calendarDayDate == lesson.getDate()) {
-                            Log.d("ScheduleManager", "Added lesson: " + lesson.getName() + " " + DateUtils.formatLongToString(lesson.getDate()) + "\nOn calendarDay: " + DateUtils.formatLongToString(calendarDay.getDate()));
+                            Log.d("ScheduleManager", "Added lesson: " + lesson.getName() + "\nDate: " + DateUtils.formatLongToString(calendarDay.getDate()));
                             calendarDay.getLessons().add(lesson);
                         }
                     }
@@ -84,6 +86,9 @@ public class ScheduleManager {
         return calendarDays;
     }
 
+
+    // Предметы в расписании
+
     public void addLesson(Lesson lesson, LessonCallback callback) {
         executorService.execute(() -> {
             try {
@@ -99,7 +104,6 @@ public class ScheduleManager {
             }
         });
     }
-
     //  Метод для удаления предмета
     public void deleteLesson(Lesson lesson, LessonCallback callback) {
         executorService.execute(() -> {
@@ -116,7 +120,6 @@ public class ScheduleManager {
             }
         });
     }
-
     //  Метод для редактирования предмета
     public void updateLesson(Lesson lesson, LessonCallback callback) {
         executorService.execute(() -> {
@@ -134,10 +137,28 @@ public class ScheduleManager {
         });
     }
 
+    // для списка уроков
+    public void addLessons(List<Lesson> lessons, LessonCallback callback) {
+        executorService.execute(() -> {
+            try {
+                db.lessonDao().insertAll(lessons);
+                if (callback != null) {
+                    callback.onSuccess();
+                }
+            } catch (Exception e) {
+                Log.e("ScheduleManager", "Error adding lessons: " + e.getMessage());
+                if (callback != null) {
+                    callback.onError(e.getMessage());
+                }
+            }
+        });
+    }
+
     public interface LessonCallback {
         void onSuccess();
         void onError(String message);
     }
+
 
     public void shutdown() {
         executorService.shutdown();

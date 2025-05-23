@@ -22,6 +22,7 @@ import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.myschedule.MainActivity;
 import com.example.myschedule.R;
@@ -148,46 +149,122 @@ public class AddLessonFragment extends Fragment {
 
         // Адаптер для персон
         List<String> persons = personsAndPlacesManager.getPersons();
-        personAutoText.setAdapter(new ArrayAdapter<String>(context, android.R.layout.simple_dropdown_item_1line, persons));
+        personAutoText.setAdapter(new ArrayAdapter<>(context, android.R.layout.simple_dropdown_item_1line, persons));
 
         // Адаптер для мест
         List<String> places = personsAndPlacesManager.getPlaces();
-        placeAutoText.setAdapter(new ArrayAdapter<String>(context, android.R.layout.simple_dropdown_item_1line, places));
+        placeAutoText.setAdapter(new ArrayAdapter<>(context, android.R.layout.simple_dropdown_item_1line, places));
     }
 
     private void addLesson() {
-        // Получаем данные
+        // Данные о предмете
         lessonName = lessonNameAutoText.getText().toString();
         lessonAssessmentType = assessmentTypeAutoText.getText().toString();
 
-        // Временно
+        // Время
         lessonStartTime = getLessonStartTime();
         lessonEndTime = DateUtils.getEndLessonTime(lessonStartTime);
 
+        // Препод и место
         teacher = personAutoText.getText().toString();
         place = placeAutoText.getText().toString();
 
         // Добавляем новый предмет если нет ошибок
         if (checkNotErrorsInData()) {
-            Lesson newLesson = new Lesson(lessonName, lessonAssessmentType, 0, lessonDate, lessonRepeatType, lessonStartTime, lessonEndTime, teacher, place, currentSemester);
-
-            // Добавляем предмет
-            scheduleManager.addLesson(newLesson, new ScheduleManager.LessonCallback() {
-                @Override
-                public void onSuccess() {
-                    Log.d("AddNewLessonFragment", "Added new lesson " + newLesson);
-                    mainActivity.refreshSchedule();
-                }
-
-                @Override
-                public void onError(String message) {
-                    Log.d("AddLessonFragment", "Error in adding lesson " + message);
-                }
-            });
-
-            closeFragment();
+            switch (lessonRepeatType) {
+                case NOT:
+                    addOneLessonToTheSchedule();
+                    break;
+                case EVERY_WEEK:
+                    addMultipleLessonsToTheSchedule(7);
+                    break;
+                case ONE_TIME_A_TWO_WEEKS:
+                    addMultipleLessonsToTheSchedule(14);
+                    break;
+            }
         }
     }
+
+    private void addOneLessonToTheSchedule() {
+        Lesson newLesson = new Lesson(lessonName, lessonAssessmentType, 0, lessonDate, lessonRepeatType, lessonStartTime, lessonEndTime, teacher, place, currentSemester);
+
+        // Добавляем предмет
+        scheduleManager.addLesson(newLesson, new ScheduleManager.LessonCallback() {
+            @Override
+            public void onSuccess() {
+                Log.d("AddNewLessonFragment", "Added new lesson " + newLesson);
+                // Обновляем расписание
+                mainActivity.runOnUiThread(() -> {
+                    mainActivity.refreshSchedule();
+                    closeFragment();
+                });
+            }
+
+            @Override
+            public void onError(String message) {
+                Log.d("AddLessonFragment", "Error in adding lesson " + message);
+                mainActivity.runOnUiThread(() -> {
+                    Toast.makeText(context, "Произошла ошибка: не удалось добавить предмет", Toast.LENGTH_LONG).show();
+                    closeFragment();
+                });
+            }
+        });
+    }
+
+    private void addMultipleLessonsToTheSchedule(int repeatInterval) {
+        // Работаем с датами
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(lessonDate); // Устанавливаем дату начала
+        long endDate = mainActivity.getCurrentSemesterEndDate(); // Получаем дату окончания семестра
+
+        // Создаём предметы
+        List<Lesson> lessonsToAdd = new ArrayList<>();
+        while (calendar.getTimeInMillis() <= endDate) {
+            long dateToNewLessonAdding = calendar.getTimeInMillis();
+
+            // Создаем новый Lesson
+            Lesson newLesson = new Lesson(
+                    lessonName,
+                    lessonAssessmentType,
+                    0, // TODO: либо убрать либо заменить на метод получения номера дня в неделе
+                    dateToNewLessonAdding,
+                    lessonRepeatType,
+                    lessonStartTime,
+                    lessonEndTime,
+                    teacher,
+                    place,
+                    currentSemester
+            );
+
+            lessonsToAdd.add(newLesson); // Добавляем урок в список
+
+            // Переходим к следующей дате
+            calendar.add(Calendar.DAY_OF_MONTH, repeatInterval);
+        }
+
+        // Теперь у нас есть список уроков, который нужно добавить в БД
+        scheduleManager.addLessons(lessonsToAdd, new ScheduleManager.LessonCallback() {
+            @Override
+            public void onSuccess() {
+                Log.d("AddNewLessonFragment", "Added " + lessonsToAdd.size() + " lessons successfully!");
+                // Обновляем расписание
+                mainActivity.runOnUiThread(() -> {
+                    mainActivity.refreshSchedule();
+                    closeFragment();
+                });
+            }
+
+            @Override
+            public void onError(String message) {
+                Log.e("AddLessonFragment", "Error in adding lessons: " + message);
+                mainActivity.runOnUiThread(() -> {
+                    Toast.makeText(context, "Произошла ошибка: не удалось добавить предметы", Toast.LENGTH_LONG).show();
+                    closeFragment();
+                });
+            }
+        });
+    }
+
 
     private void showDatePickerDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
@@ -197,8 +274,8 @@ public class AddLessonFragment extends Fragment {
         // Находим элементы
         DatePicker datePicker = dialogView.findViewById(R.id.dialog_lesson_date_picker);
         RadioGroup repeatRadioGroup = dialogView.findViewById(R.id.dialog_lesson_date_picker_repeat_radio_group);
-        RadioButton notRadioButton = dialogView.findViewById(R.id.dialog_lesson_date_picker_not_repeat);
-        notRadioButton.setChecked(true);
+        RadioButton selectedRB = dialogView.findViewById(getSelectedRepeatTypeRBId());
+        selectedRB.setChecked(true);
         ImageButton closeButton = dialogView.findViewById(R.id.dialog_lesson_close_image_button);
         Button saveButton = dialogView.findViewById(R.id.dialog_lesson_save_button);
 
@@ -275,6 +352,19 @@ public class AddLessonFragment extends Fragment {
             return selectedItem.getStartTime();
         }
         return timetableManager.getLessonTime("1"); // По умолчанию возвращаем время первой пары
+    }
+
+    private int getSelectedRepeatTypeRBId() {
+        switch (lessonRepeatType) {
+            case NOT:
+                return R.id.dialog_lesson_date_picker_not_repeat;
+            case ONE_TIME_A_TWO_WEEKS:
+                return R.id.dialog_lesson_date_picker_two_weeks_repeat;
+            case EVERY_WEEK:
+                return R.id.dialog_lesson_date_picker_every_repeat;
+            default:
+                return R.id.dialog_lesson_date_picker_not_repeat;
+        }
     }
 
     private void closeFragment() {
