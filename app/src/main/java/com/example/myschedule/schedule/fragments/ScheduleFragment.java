@@ -86,7 +86,7 @@ public class ScheduleFragment extends Fragment {
         }
     }
 
-    private void updateSchedule() {
+    public void updateSchedule() {
         isActualScheduleDisplayed = false;
         initScheduleWhenReady();
         if (isActualScheduleDisplayed) {

@@ -19,23 +19,26 @@ public interface LessonDao {
     @Insert
     void insertAll(List<Lesson> lessons);
 
+
     @Delete
     void delete(Lesson lesson);
+    @Query("DELETE FROM lessons WHERE semesterId = :semesterId")
+    void deleteAllLessonsBySemesterId(int semesterId);
+
 
     @Update
     void update(Lesson lesson);
 
+
+    // Все предметы в семестре
     @Query("SELECT * FROM lessons WHERE semesterId = :semesterId")
     List<Lesson> getLessonsBySemesterId(int semesterId);
 
+    // На конкретную дату
     @Query("SELECT * FROM lessons WHERE semesterId = :semesterId AND date <= :date")
     List<Lesson> getLessonsBySemesterIdAndDate(int semesterId, long date);
 
-    // Запрос с учетом типа повторения
-    @Query("SELECT * FROM lessons WHERE semesterId = :semesterId AND dayOfWeek = :dayOfWeek AND date <= :date AND (repeatType = :repeatType OR repeatType IS NULL)")
-    List<Lesson> getLessonsBySemesterIdAndDayOfWeekAndDateAndRepeatType(String semesterId, int dayOfWeek, long date, Lesson.RepeatType repeatType);
-
-    //  Запрос для получения всех уроков в заданном диапазоне дат (для оптимизации)
+    //  Запрос для получения всех уроков в заданном диапазоне дат
     @Query("SELECT * FROM lessons WHERE semesterId = :semesterId AND date BETWEEN :startDate AND :endDate")
     List<Lesson> getLessonsBySemesterIdAndDateRange(int semesterId, long startDate, long endDate);
 }

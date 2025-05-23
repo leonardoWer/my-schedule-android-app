@@ -32,14 +32,16 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity {
 
     private BottomNavigationView bottomMenu;
+    private FragmentManager fragmentManager;
+
+    private SemesterManager semesterManager;
+    private ScheduleManager scheduleManager;
+    private UserDataManager userDataManager;
 
     private Semester currentSemester;
     private List<CalendarDay> schedule;
     private boolean scheduleLoaded = false;
 
-    private SemesterManager semesterManager;
-    private ScheduleManager scheduleManager;
-    private UserDataManager userDataManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,23 +55,35 @@ public class MainActivity extends AppCompatActivity {
         });
 
         // Проверяем, не зашёл ли пользователь первый раз
+        checkUserFirstTime();
+
+        // Находим элементы
+        bottomMenu = findViewById(R.id.bottom_menu);
+
+        // Загружаем страницу
+        initMainActivity();
+    }
+
+    private void checkUserFirstTime() {
         userDataManager = new UserDataManager(this);
         if (userDataManager.isUserFirstTime()) {
             Intent intent = new Intent(this, StartActivity.class);
             startActivity(intent);
         }
+    }
 
-        // Находим элементы
-        bottomMenu = findViewById(R.id.bottom_menu);
-
-        // Создаём менеджеры
-        semesterManager = new SemesterManager(this);
-        scheduleManager = new ScheduleManager(this);
-
-        // Загружаем страницу
+    private void initMainActivity() {
+        initManagers();
         loadFragment(new ActualFragment());
         initBottomMenu();
         loadSemesterAndSchedule();
+    }
+
+    private void initManagers() {
+        // Создаём менеджеры
+        fragmentManager = getSupportFragmentManager();
+        semesterManager = new SemesterManager(this);
+        scheduleManager = new ScheduleManager(this);
     }
 
     private void loadSemesterAndSchedule() {
@@ -91,7 +105,7 @@ public class MainActivity extends AppCompatActivity {
             public void onScheduleLoaded(List<CalendarDay> calendarDays) {
                 runOnUiThread(() -> {
                     schedule = calendarDays;
-                    Log.d("MainActivityLoadingSchedule", "Loaded schedule size: " + schedule.size());
+                    Log.d("MainActivity", "Schedule successfully loaded!\nDisplaying schedule days cnt: " + schedule.size());
                     scheduleLoaded = true;
                 });
             }
@@ -121,6 +135,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void refreshSchedule() {
+        Log.i("MainActivity", "Start refreshing schedule");
         if (currentSemester != null) {
             loadSchedule();
         } else {
@@ -148,6 +163,7 @@ public class MainActivity extends AppCompatActivity {
         return currentSemester.getEndDate();
     }
 
+    // Меню
 
     private void initBottomMenu() {
         // Устанавливаем страницу по умолчанию
@@ -175,7 +191,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void loadFragment(Fragment fragment) {
-        FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.main_frame_layout, fragment);
         fragmentTransaction.commit();
@@ -183,7 +198,6 @@ public class MainActivity extends AppCompatActivity {
 
     public void loadAddLessonFragment() {
         bottomMenu.setVisibility(View.INVISIBLE);
-        FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.setCustomAnimations(R.anim.slide_in, R.anim.slide_out);
         fragmentTransaction.replace(R.id.add_lesson_frame_layout, new AddLessonFragment());
@@ -191,7 +205,6 @@ public class MainActivity extends AppCompatActivity {
     }
     public void closeAddLessonFragment() {
         bottomMenu.setVisibility(View.VISIBLE);
-        FragmentManager fragmentManager = getSupportFragmentManager();
         Fragment addLessonFragment = fragmentManager.findFragmentById(R.id.add_lesson_frame_layout);
         if (addLessonFragment != null) {
             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
@@ -199,10 +212,24 @@ public class MainActivity extends AppCompatActivity {
             fragmentTransaction.remove(addLessonFragment);
             fragmentTransaction.commit();
 
-            //Очищаем BackStack
+            // Очищаем BackStack
             fragmentManager.popBackStack();
         }
+
+        // Обновляем расписание в фрагменте
+        updateScheduleInScheduleFragment();
     }
+    public void updateScheduleInScheduleFragment() {
+        try {
+            ScheduleFragment scheduleFragment = (ScheduleFragment) fragmentManager.findFragmentById(R.id.main_frame_layout);
+            if (scheduleFragment != null) {
+                scheduleFragment.updateSchedule();
+            }
+        } catch (Error e) {
+            Log.d("MainPage", "Error updating Schedule Fragment: " + e);
+        }
+    }
+
 
     @Override
     protected void onDestroy() {

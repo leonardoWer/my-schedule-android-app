@@ -131,6 +131,6 @@ public class Lesson {
     @NonNull
     @Override
     public String toString() {
-        return id + ": " + name + " " + DateUtils.formatLongToString(date);
+        return name + " " + DateUtils.formatLongToString(date);
     }
 }

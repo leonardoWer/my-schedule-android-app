@@ -153,6 +153,22 @@ public class ScheduleManager {
             }
         });
     }
+    //  Метод для удаления предметов
+    public void deleteALlLessonsInSemester(int semesterId, LessonCallback callback) {
+        executorService.execute(() -> {
+            try {
+                db.lessonDao().deleteAllLessonsBySemesterId(semesterId);
+                if (callback != null) {
+                    callback.onSuccess();
+                }
+            } catch (Exception e) {
+                Log.e("ScheduleManager", "Error deleting lesson: " + e.getMessage());
+                if (callback != null) {
+                    callback.onError(e.getMessage());
+                }
+            }
+        });
+    }
 
     public interface LessonCallback {
         void onSuccess();

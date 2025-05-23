@@ -30,6 +30,7 @@ import com.example.myschedule.editor.items.Semester;
 import com.example.myschedule.editor.managers.PersonsAndPlacesManager;
 import com.example.myschedule.editor.managers.TimetableManager;
 import com.example.myschedule.lessons.LessonsManager;
+import com.example.myschedule.schedule.ScheduleManager;
 import com.example.myschedule.user.UserDataManager;
 import com.example.myschedule.utils.DateUtils;
 import com.example.myschedule.utils.LayoutUtils;
@@ -55,6 +56,7 @@ public class EditorFragment extends Fragment {
     private TimetableManager timetableManager;
     private PersonsAndPlacesManager personsAndPlacesManager;
     private LessonsManager lessonsManager;
+    private ScheduleManager scheduleManager;
 
     private int currentSemester;
     private HashMap<String, String> timetable = new HashMap<>();
@@ -102,6 +104,7 @@ public class EditorFragment extends Fragment {
             timetableManager = new TimetableManager(context);
             personsAndPlacesManager = new PersonsAndPlacesManager(context);
             lessonsManager = new LessonsManager(context);
+            scheduleManager = new ScheduleManager(context);
         }
     }
 
@@ -171,7 +174,18 @@ public class EditorFragment extends Fragment {
     }
 
     private void clearScheduleCurrentSemester() {
-        Toast.makeText(context, "Расписание за текущий семестр успешно удалено", Toast.LENGTH_SHORT).show();
+        scheduleManager.deleteALlLessonsInSemester(currentSemester, new ScheduleManager.LessonCallback() {
+            @Override
+            public void onSuccess() {
+                mainActivity.refreshSchedule();
+                mainActivity.runOnUiThread(() -> Toast.makeText(context, "Расписание за текущий семестр успешно удалено", Toast.LENGTH_LONG).show());
+            }
+
+            @Override
+            public void onError(String message) {
+                mainActivity.runOnUiThread(() -> Toast.makeText(context, "Произошла ошибка: не удалось удалить расписание за текущий семестр", Toast.LENGTH_LONG).show());
+            }
+        });
     }
 
     private void clearLessonsCurrentSemester() {
