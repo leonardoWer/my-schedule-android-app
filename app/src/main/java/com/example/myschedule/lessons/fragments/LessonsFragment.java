@@ -22,6 +22,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.myschedule.R;
 import com.example.myschedule.lessons.LessonsManager;
@@ -31,7 +32,6 @@ import com.example.myschedule.user.UserDataManager;
 import com.example.myschedule.widgets.CircleProgressBar;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 
@@ -62,32 +62,36 @@ public class LessonsFragment extends Fragment {
         lessonsRecyclerView = view.findViewById(R.id.lesson_fragment_recycler_view);
         addDisciplineButton = view.findViewById(R.id.lesson_fragment_add_lesson_button);
 
-        // Получаем менеджеры
-        context = getContext();
-        if (context != null) {
-            userDataManager = new UserDataManager(context);
-            lessonsManager = new LessonsManager(context);
-        }
-
         // Загружаем страницу
         initLessonsFragment();
 
     }
 
     private void initLessonsFragment() {
-        // Получаем данные
+        initManagers();
+        initData();
+        initRecyclerView();
+
+        // Устанавливаем обработчики
+        addDisciplineButton.setOnClickListener(v -> showAddDisciplineDialog(null));
+    }
+
+    private void initManagers() {
+        // Получаем менеджеры
+        context = getContext();
+        if (context != null) {
+            userDataManager = new UserDataManager(context);
+            lessonsManager = new LessonsManager(context);
+        }
+    }
+
+    private void initData() {
         currentSemester = userDataManager.getUserCurrentSemester();
         disciplines = lessonsManager.getDisciplinesOnSemester(currentSemester);
         if (disciplines == null) {
             Log.d("LessonsFragment", "Disciplines = null exception!");
             disciplines = new ArrayList<>();
         }
-
-        // Загружаем страницу
-        initRecyclerView();
-
-        // Устанавливаем обработчики
-        addDisciplineButton.setOnClickListener(v -> showAddDisciplineDialog(null));
     }
 
     private void initRecyclerView() {
@@ -123,8 +127,11 @@ public class LessonsFragment extends Fragment {
 
         // Заполняем поля диалога данными (если дисциплина не равна null)
         if (discipline != null) {
+            // Настройки диалога
             TextView title = view.findViewById(R.id.dialog_add_discipline_title_text);
             title.setText("Изменить предмет");
+
+            // Заполняем данными
             nameEditText.setText(discipline.getName());
             assessmentTypeAutoText.setText(discipline.getAssessmentType());
             ballsCntEditText.setText(String.valueOf(discipline.getBallsCnt()));
@@ -135,6 +142,15 @@ public class LessonsFragment extends Fragment {
         AlertDialog dialog = builder.create();
 
         // Устанавливаем обработчики
+        if (discipline != null) {
+            ImageButton deleteButton = view.findViewById(R.id.dialog_add_discipline_delete_image_button);
+            deleteButton.setVisibility(View.VISIBLE);
+            deleteButton.setOnClickListener(v -> {
+                deleteDiscipline(discipline);
+                dialog.dismiss();
+            });
+        }
+
         ballsCntEditText.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
@@ -189,8 +205,7 @@ public class LessonsFragment extends Fragment {
             }
 
             // Обновляем и сохраняем
-            lessonsManager.setDisciplinesOnSemester(currentSemester, disciplines);
-            lessonsRecyclerViewAdapter.setDisciplines(disciplines);
+            updateDisciplinesView();
 
             dialog.dismiss();
         });
@@ -201,7 +216,21 @@ public class LessonsFragment extends Fragment {
         dialog.show();
     }
 
+    private void updateDisciplinesView() {
+        lessonsManager.setDisciplinesOnSemester(currentSemester, disciplines);
+        lessonsRecyclerViewAdapter.setDisciplines(disciplines);
+    }
+
     public interface DisciplineItemClick {
         void onItemClicked(Discipline discipline);
+    }
+
+    private void deleteDiscipline(Discipline discipline) {
+        int index = disciplines.indexOf(discipline);
+        if (index >= 0) {
+            disciplines.remove(index);
+            updateDisciplinesView();
+            Toast.makeText(context, "Предмет " + discipline.getName() + " успешно удалён", Toast.LENGTH_SHORT).show();
+        }
     }
 }
