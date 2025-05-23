@@ -105,6 +105,10 @@ public class MainActivity extends AppCompatActivity {
                     Log.d("MainActivity", "Try to increase bag semester from" + bagCurrentSemester + " to " + bagCurrentSemester++);
                     userDataManager.setUserCurrentSemester(bagCurrentSemester++);
                     loadSemesterAndSchedule();
+                } else if (bagCurrentSemester > 8) {
+                    Log.d("MainActivity", "Try to increase bag semester from" + bagCurrentSemester + " to " + bagCurrentSemester--);
+                    userDataManager.setUserCurrentSemester(bagCurrentSemester--);
+                    loadSemesterAndSchedule();
                 } else {
                     userDataManager.clearUserData();
                 }
