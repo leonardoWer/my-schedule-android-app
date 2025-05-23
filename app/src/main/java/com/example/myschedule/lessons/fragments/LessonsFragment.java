@@ -87,19 +87,19 @@ public class LessonsFragment extends Fragment {
         initRecyclerView();
 
         // Устанавливаем обработчики
-        addDisciplineButton.setOnClickListener(v -> showAddDisciplineDialog());
+        addDisciplineButton.setOnClickListener(v -> showAddDisciplineDialog(null));
     }
 
     private void initRecyclerView() {
         // Создаём адаптер
-        lessonsRecyclerViewAdapter = new LessonsRecyclerViewAdapter(disciplines, context);
+        lessonsRecyclerViewAdapter = new LessonsRecyclerViewAdapter(context, disciplines, this::showAddDisciplineDialog);
 
         // Устанавливаем адаптер
         lessonsRecyclerView.setLayoutManager(new LinearLayoutManager(context));
         lessonsRecyclerView.setAdapter(lessonsRecyclerViewAdapter);
     }
 
-    private void showAddDisciplineDialog() {
+    private void showAddDisciplineDialog(Discipline discipline) {
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
 
         // Надуваем макет диалога
@@ -116,10 +116,20 @@ public class LessonsFragment extends Fragment {
 
         // Устанавливаем адаптер
         String[] assessmentTypes = {"Экзамен", "Зачёт", "Дифференцированный зачёт"};
-        assessmentTypeAutoText.setAdapter(new ArrayAdapter<String>(context, android.R.layout.simple_dropdown_item_1line, assessmentTypes));
+        assessmentTypeAutoText.setAdapter(new ArrayAdapter<>(context, android.R.layout.simple_dropdown_item_1line, assessmentTypes));
 
         // Устанавливаем максимум для прогресс бара
         circleProgressBar.setMaxProgress(100);
+
+        // Заполняем поля диалога данными (если дисциплина не равна null)
+        if (discipline != null) {
+            TextView title = view.findViewById(R.id.dialog_add_discipline_title_text);
+            title.setText("Изменить предмет");
+            nameEditText.setText(discipline.getName());
+            assessmentTypeAutoText.setText(discipline.getAssessmentType());
+            ballsCntEditText.setText(String.valueOf(discipline.getBallsCnt()));
+            circleProgressBar.setProgress((int) discipline.getBallsCnt());
+        }
 
         // Создаём диалог
         AlertDialog dialog = builder.create();
@@ -170,8 +180,15 @@ public class LessonsFragment extends Fragment {
             // Создаём новый предмет
             Discipline newDiscipline = new Discipline(name, assessmentType, ballsCnt);
 
-            // Добавляем его в список, сохраняем и обновляем UI
-            disciplines.add(newDiscipline);
+            // Добавляем новый или обновляем старый предмет
+            int index = disciplines.indexOf(discipline);
+            if (index >= 0) {
+                disciplines.set(index, newDiscipline);
+            } else {
+                disciplines.add(newDiscipline);
+            }
+
+            // Обновляем и сохраняем
             lessonsManager.setDisciplinesOnSemester(currentSemester, disciplines);
             lessonsRecyclerViewAdapter.setDisciplines(disciplines);
 
@@ -182,5 +199,9 @@ public class LessonsFragment extends Fragment {
 
         // Создаем и показываем диалог
         dialog.show();
+    }
+
+    public interface DisciplineItemClick {
+        void onItemClicked(Discipline discipline);
     }
 }

@@ -12,6 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.myschedule.R;
+import com.example.myschedule.lessons.fragments.LessonsFragment;
 import com.example.myschedule.lessons.items.Discipline;
 import com.example.myschedule.widgets.CircleProgressBar;
 
@@ -19,12 +20,15 @@ import java.util.List;
 
 public class LessonsRecyclerViewAdapter extends RecyclerView.Adapter<LessonsRecyclerViewAdapter.ViewHolder> {
 
-    private List<Discipline> disciplines;
     private Context context;
+    private List<Discipline> disciplines;
+    private static LessonsFragment.DisciplineItemClick disciplineItemClick;
 
-    public LessonsRecyclerViewAdapter(List<Discipline> disciplines, Context context) {
+
+    public LessonsRecyclerViewAdapter(Context context, List<Discipline> disciplines, LessonsFragment.DisciplineItemClick disciplineItemClick) {
         this.disciplines = disciplines;
         this.context = context;
+        LessonsRecyclerViewAdapter.disciplineItemClick = disciplineItemClick;
     }
 
     @NonNull
@@ -76,6 +80,9 @@ public class LessonsRecyclerViewAdapter extends RecyclerView.Adapter<LessonsRecy
             ballsCntTextView.setText(String.valueOf((int) ballsCnt));
             ballsCntProgressBar.setMaxProgress(100);
             ballsCntProgressBar.setProgress((int) ballsCnt);
+
+            // Обработка нажатия
+            itemView.setOnClickListener(v -> disciplineItemClick.onItemClicked(discipline));
         }
     }
 }

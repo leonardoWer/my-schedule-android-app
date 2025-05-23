@@ -44,8 +44,4 @@ public class LessonsManager {
 
         return disciplines;
     }
-
-    public void addDiscipline() {
-
-    }
 }
