@@ -47,18 +47,17 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Текущий курс обучения"
+                    android:text="@string/current_semester"
                     style="@style/tittle_medium_text"
                     android:textSize="18sp"
                     android:layout_marginTop="8dp"/>
-
                 <EditText
                     android:id="@+id/editor_current_semester_edit_text"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:autofillHints=""
                     android:minHeight="48dp"
-                    android:hint="Номер курса"
+                    android:hint="@string/semester_number"
                     style="@style/rounded_input"
                     android:background="@drawable/rounded_input"
                     android:layout_gravity="center"
@@ -67,7 +66,57 @@
                     android:maxLength="1"
                     android:layout_marginTop="16dp"/>
 
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/date_start_and_end"
+                    style="@style/tittle_medium_text"
+                    android:textSize="18sp"
+                    android:layout_marginTop="22dp"/>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_weight="7"
+                    android:layout_marginTop="16dp">
+                    <EditText
+                        android:id="@+id/editor_current_semester_start_date_edit_text"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:autofillHints=""
+                        android:minHeight="48dp"
+                        android:hint="@string/start_date"
+                        style="@style/rounded_input"
+                        android:background="@drawable/rounded_input"
+                        android:inputType="date"
+                        android:layout_weight="3" />
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:text=":"
+                        style="@style/tittle_medium_text"
+                        android:textSize="22sp"
+                        android:layout_weight="1"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:layout_marginHorizontal="4dp"/>
+                    <EditText
+                        android:id="@+id/editor_current_semester_end_date_edit_text"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:autofillHints=""
+                        android:minHeight="48dp"
+                        android:hint="@string/end_date"
+                        style="@style/rounded_input"
+                        android:background="@drawable/rounded_input"
+                        android:layout_gravity="center"
+                        android:inputType="date"
+                        android:layout_weight="3" />
+                </LinearLayout>
+
             </LinearLayout>
+
 
             <LinearLayout
                 android:id="@+id/editor_timetable_linear_layout"

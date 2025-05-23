@@ -6,6 +6,12 @@
     <string name="your_name">Ваше имя</string>
     <string name="what_is_your_course">На каком вы сейчас курсе?</string>
     <string name="course_number">Номер курса</string>
+    <string name="what_is_your_semester">Какой у вас семестр?</string>
+    <string name="semester_number">Номер семестра</string>
+    <string name="current_semester">Текущий семестр</string>
+    <string name="date_start_and_end">Дата начала и конца</string>
+    <string name="start_date">Дата начала</string>
+    <string name="end_date">Дата конца</string>
     <string name="start">Начать</string>
     <string name="save">Сохранить</string>
     <string name="delete">Удалить</string>

@@ -51,7 +51,7 @@ public class StartActivity extends AppCompatActivity {
     private void saveAndStart() {
         String userName = nameEditText.getText().toString();
         String currentSemester = currentSemesterEditText.getText().toString();
-        Log.d("StartActivity", "User: " + userName + " " + currentSemester);
+        Log.d("StartActivity", "User: " + userName + "; semester: " + currentSemester);
 
         if (checkNotErrorsInData(userName, currentSemester)) {
             // Сохраняем параметры

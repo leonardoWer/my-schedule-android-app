@@ -35,7 +35,7 @@ public class SemesterManager {
                     Semester newSemester = getCurrentSemester(semester, currentYear);
                     db.semesterDao().insert(newSemester);
 
-                    Log.w("SemesterManager", "Initialize semesters: new semester added id: " + newSemester.getId() + ", end date: " + newSemester.getEndDate());
+                    Log.w("SemesterManager", "Initialize semesters: new semester added id: " + newSemester.getId() + "; dates: " + DateUtils.formatLongToString(newSemester.getStartDate()) + ":" + DateUtils.formatLongToString(newSemester.getEndDate()));
 
                     if (semester %2 != 0) {
                         currentYear++;

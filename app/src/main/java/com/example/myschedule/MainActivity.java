@@ -73,15 +73,12 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void loadSemesterAndSchedule() {
-        semesterManager.getSemesterById(userDataManager.getUserCurrentSemester(), new SemesterManager.SemesterCallback() {
-            @Override
-            public void onSemesterLoaded(Semester semester) {
-                currentSemester = semester;
-                Log.d("ScheduleFragment", "Loaded semester is: " + currentSemester.getId() + ", end date: " + currentSemester.getEndDate());
+        semesterManager.getSemesterById(userDataManager.getUserCurrentSemester(), semester -> {
+            currentSemester = semester;
+            Log.i("MainActivity(ScheduleFragment)", "Loaded semester is: " + currentSemester.getId() + "; dates: " + DateUtils.formatLongToString(currentSemester.getStartDate()) + ":" + DateUtils.formatLongToString(currentSemester.getEndDate()));
 
-                // Загружаем расписание
-                loadSchedule();
-            }
+            // Загружаем расписание
+            loadSchedule();
         });
     }
 
