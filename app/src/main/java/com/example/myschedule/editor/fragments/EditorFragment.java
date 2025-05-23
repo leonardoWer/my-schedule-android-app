@@ -114,9 +114,8 @@ public class EditorFragment extends Fragment {
     private void initCurrentSemester() {
         // Получаем значения
         currentSemester = userDataManager.getUserCurrentSemester();
-        Semester semester = mainActivity.getCurrentSemester();
-        String currentSemesterStartDate = DateUtils.formatLongToString(semester.getStartDate());
-        String currentSemesterEndDate = DateUtils.formatLongToString(semester.getEndDate());
+        String currentSemesterStartDate = DateUtils.formatLongToString(mainActivity.getCurrentSemesterStartDate());
+        String currentSemesterEndDate = DateUtils.formatLongToString(mainActivity.getCurrentSemesterEndDate());
 
         // Устанавливаем значения
         try {
@@ -364,6 +363,7 @@ public class EditorFragment extends Fragment {
         if (newSelectedSemester > 0) {
             try {
                 userDataManager.setUserCurrentSemester(newSelectedSemester);
+                mainActivity.refreshCurrentSemester();
             } catch (Error e) {
                 Log.i("Editor fragment", e + ": Uncorrect selected semester");
                 initCurrentSemester();

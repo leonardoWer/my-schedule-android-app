@@ -38,4 +38,9 @@ public class UserDataManager {
     public boolean isUserFirstTime() {
         return getUserName().isEmpty() || getUserCurrentSemester() == 0;
     }
+
+    public void clearUserData() {
+        editor.clear();
+        editor.apply();
+    }
 }

@@ -47,9 +47,21 @@ public class SemesterManager {
 
     public void getSemesterById(int semesterId, SemesterCallback callback) {
         executorService.execute(() -> {
-            Semester semester = db.semesterDao().getSemesterById(semesterId);
-            if (callback != null) {
-                callback.onSemesterLoaded(semester);
+            try {
+                Semester semester = db.semesterDao().getSemesterById(semesterId);
+                if (semester != null) {
+                    if (callback != null) {
+                        callback.onSemesterLoaded(semester);
+                    }
+                } else {
+                    if (callback != null) {
+                        callback.onError(new Throwable("Semester not found or semester = null"));
+                    }
+                }
+            } catch (Error e) {
+                if (callback != null) {
+                    callback.onError(e);
+                }
             }
         });
     }
@@ -57,6 +69,7 @@ public class SemesterManager {
     // Интерфейс для обратного вызова при получении семестра
     public interface SemesterCallback {
         void onSemesterLoaded(Semester semester);
+        void onError(Throwable error);
     }
 
     public void shutdown() {

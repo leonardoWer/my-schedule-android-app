@@ -87,12 +87,28 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void loadSemesterAndSchedule() {
-        semesterManager.getSemesterById(userDataManager.getUserCurrentSemester(), semester -> {
-            currentSemester = semester;
-            Log.i("MainActivity(ScheduleFragment)", "Loaded semester is: " + currentSemester.getId() + "; dates: " + DateUtils.formatLongToString(currentSemester.getStartDate()) + ":" + DateUtils.formatLongToString(currentSemester.getEndDate()));
+        semesterManager.getSemesterById(userDataManager.getUserCurrentSemester(), new SemesterManager.SemesterCallback() {
+            @Override
+            public void onSemesterLoaded(Semester semester) {
+                currentSemester = semester;
+                Log.i("MainActivity(ScheduleFragment)", "Loaded semester is: " + currentSemester.getId() + "; dates: " + DateUtils.formatLongToString(currentSemester.getStartDate()) + ":" + DateUtils.formatLongToString(currentSemester.getEndDate()));
 
-            // Загружаем расписание
-            loadSchedule();
+                // Загружаем расписание
+                loadSchedule();
+            }
+
+            @Override
+            public void onError(Throwable error) {
+                Log.d("MainActivity", "Error with loading semester: " + error);
+                int bagCurrentSemester = userDataManager.getUserCurrentSemester();
+                if (bagCurrentSemester < 8) {
+                    Log.d("MainActivity", "Try to increase bag semester from" + bagCurrentSemester + " to " + bagCurrentSemester++);
+                    userDataManager.setUserCurrentSemester(bagCurrentSemester++);
+                    loadSemesterAndSchedule();
+                } else {
+                    userDataManager.clearUserData();
+                }
+            }
         });
     }
 
@@ -228,6 +244,10 @@ public class MainActivity extends AppCompatActivity {
         } catch (Error e) {
             Log.d("MainPage", "Error updating Schedule Fragment: " + e);
         }
+    }
+
+    public void refreshCurrentSemester() {
+        loadSemesterAndSchedule();
     }
 
 
