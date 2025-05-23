@@ -26,6 +26,7 @@ import android.widget.Toast;
 
 import com.example.myschedule.MainActivity;
 import com.example.myschedule.R;
+import com.example.myschedule.editor.items.Semester;
 import com.example.myschedule.editor.managers.PersonsAndPlacesManager;
 import com.example.myschedule.editor.managers.TimetableManager;
 import com.example.myschedule.lessons.LessonsManager;
@@ -42,6 +43,7 @@ import java.util.List;
 public class EditorFragment extends Fragment {
 
     private EditText currentSemesterEditText;
+    private EditText currentSemesterStartDateEditText, currentSemesterEndDateEditText;
     private LinearLayout timetableLinearLayout;
     private LinearLayout personsLinearLayout, placesLinearLayout;
     private ImageButton addPersonImageButton, addPlaceImageButton;
@@ -69,6 +71,8 @@ public class EditorFragment extends Fragment {
 
         // Находим элементы
         currentSemesterEditText = view.findViewById(R.id.editor_current_semester_edit_text);
+        currentSemesterStartDateEditText = view.findViewById(R.id.editor_current_semester_start_date_edit_text);
+        currentSemesterEndDateEditText = view.findViewById(R.id.editor_current_semester_end_date_edit_text);
         timetableLinearLayout = view.findViewById(R.id.editor_timetable_linear_layout);
         personsLinearLayout = view.findViewById(R.id.editor_persons_linear_layout);
         placesLinearLayout = view.findViewById(R.id.editor_places_linear_layout);
@@ -104,9 +108,18 @@ public class EditorFragment extends Fragment {
     private void initCurrentSemester() {
         // Получаем значения
         currentSemester = userDataManager.getUserCurrentSemester();
+        Semester semester = mainActivity.getCurrentSemester();
+        String currentSemesterStartDate = DateUtils.formatLongToString(semester.getStartDate());
+        String currentSemesterEndDate = DateUtils.formatLongToString(semester.getEndDate());
 
         // Устанавливаем значения
-        currentSemesterEditText.setText(String.valueOf(currentSemester));
+        try {
+            currentSemesterEditText.setText(String.valueOf(currentSemester));
+            currentSemesterStartDateEditText.setText(currentSemesterStartDate);
+            currentSemesterEndDateEditText.setText(currentSemesterEndDate);
+        } catch (Error e) {
+            Log.w("EditorFragment", "Не удалось установить параметры текущего семестра");
+        }
     }
 
     private void initTimetable() {

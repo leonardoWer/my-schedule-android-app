@@ -90,7 +90,8 @@
                         style="@style/rounded_input"
                         android:background="@drawable/rounded_input"
                         android:inputType="date"
-                        android:layout_weight="3" />
+                        android:layout_weight="3"
+                        android:gravity="center"/>
                     <TextView
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
@@ -112,7 +113,8 @@
                         android:background="@drawable/rounded_input"
                         android:layout_gravity="center"
                         android:inputType="date"
-                        android:layout_weight="3" />
+                        android:layout_weight="3"
+                        android:gravity="center"/>
                 </LinearLayout>
 
             </LinearLayout>
