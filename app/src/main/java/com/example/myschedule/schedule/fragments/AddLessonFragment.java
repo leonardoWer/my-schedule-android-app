@@ -47,6 +47,7 @@ public class AddLessonFragment extends Fragment {
     private AutoCompleteTextView lessonNameAutoText, assessmentTypeAutoText;
     private TextView dateTextView;
     private RelativeLayout datePickerDialogRelative;
+    private TextView selectedRepeatTypeText;
     private Spinner timePickerSpinner;
     private AutoCompleteTextView personAutoText, placeAutoText;
     private Button saveButton;
@@ -84,6 +85,7 @@ public class AddLessonFragment extends Fragment {
 
         dateTextView = view.findViewById(R.id.add_lesson_date_text);
         datePickerDialogRelative = view.findViewById(R.id.add_lesson_date_dialog_relative_layout);
+        selectedRepeatTypeText = view.findViewById(R.id.add_lesson_repeat_type_text);
         timePickerSpinner = view.findViewById(R.id.add_lesson_lesson_start_time_spinner);
 
         personAutoText = view.findViewById(R.id.add_lesson_teacher_auto_text);
@@ -303,7 +305,7 @@ public class AddLessonFragment extends Fragment {
             DateUtils.setOnlyImportantDataForCalendar(selectedCalendar);
 
             lessonDate = selectedCalendar.getTimeInMillis();
-            dateTextView.setText(DateUtils.getDateAndMonthNameFromLong(lessonDate));
+            dateTextView.setText(String.format("%s, %s", DateUtils.getDateAndMonthNameFromLong(lessonDate), DateUtils.getDayOfWeekNameFromLong(lessonDate)));
 
             // Получаем выбранный тип повторения
             int selectedRadioButtonId = repeatRadioGroup.getCheckedRadioButtonId();
@@ -316,6 +318,7 @@ public class AddLessonFragment extends Fragment {
             }
 
             // Закрываем диалог
+            updateSelectedRepeatTypeView();
             alertDialog.dismiss();
         });
 
@@ -364,6 +367,23 @@ public class AddLessonFragment extends Fragment {
                 return R.id.dialog_lesson_date_picker_every_repeat;
             default:
                 return R.id.dialog_lesson_date_picker_not_repeat;
+        }
+    }
+
+    private void updateSelectedRepeatTypeView() {
+        switch (lessonRepeatType) {
+            case NOT:
+                selectedRepeatTypeText.setText("не повторять");
+                break;
+            case ONE_TIME_A_TWO_WEEKS:
+                selectedRepeatTypeText.setText("Раз в две недели");
+                break;
+            case EVERY_WEEK:
+                selectedRepeatTypeText.setText("Каждую неделю");
+                break;
+            default:
+                selectedRepeatTypeText.setText("не повторять");
+                break;
         }
     }
 

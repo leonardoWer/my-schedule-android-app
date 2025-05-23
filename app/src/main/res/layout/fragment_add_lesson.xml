@@ -117,7 +117,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="32dp"
                     android:layout_marginTop="16dp"
-                    android:text="Дата"
+                    android:text="@string/date"
                     style="@style/tittle_medium_text"
                     android:textSize="18sp"/>
                 <RelativeLayout
@@ -135,7 +135,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         style="@style/tittle_regular_text"
-                        android:text="Выбранная дата"
+                        android:text="@string/selected_date"
                         android:textSize="16sp"
                         android:layout_marginStart="8dp"
                         android:layout_marginEnd="16dp"
@@ -156,13 +156,25 @@
                 </RelativeLayout>
 
                 <TextView
+                    android:id="@+id/add_lesson_repeat_type_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="38dp"
+                    android:layout_marginTop="8dp"
+                    android:text="не повторять"
+                    style="@style/tittle_regular_text"
+                    android:textSize="14sp"
+                    app:drawableStartCompat="@drawable/repeat_icon"
+                    android:drawablePadding="4dp" />
+
+                <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="32dp"
-                    android:layout_marginTop="16dp"
+                    android:layout_marginTop="18dp"
                     android:text="Время начала"
                     style="@style/tittle_medium_text"
-                    android:textSize="18sp"/>
+                    android:textSize="18sp" />
                 <Spinner
                     android:id="@+id/add_lesson_lesson_start_time_spinner"
                     android:layout_width="match_parent"
