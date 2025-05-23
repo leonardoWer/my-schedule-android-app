@@ -30,6 +30,16 @@
             android:layout_margin="4dp"
             android:layout_centerVertical="true"
             android:layout_alignParentEnd="true"/>
+
+        <ImageButton
+            android:id="@+id/dialog_add_person_and_places_delete_image_button"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:background="@android:color/transparent"
+            android:src="@drawable/delete_icon"
+            android:layout_centerVertical="true"
+            android:layout_toStartOf="@+id/dialog_add_person_and_places_close_image_button"
+            android:visibility="gone"/>
     </RelativeLayout>
 
     <EditText

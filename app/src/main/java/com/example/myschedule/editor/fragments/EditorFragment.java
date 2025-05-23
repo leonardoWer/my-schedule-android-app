@@ -61,6 +61,9 @@ public class EditorFragment extends Fragment {
     private int currentSemester;
     private HashMap<String, String> timetable = new HashMap<>();
     private List<String> persons, places;
+    private final String PERSONS_KEY = "persons";
+    private final String PLACES_KEY = "places";
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -144,15 +147,15 @@ public class EditorFragment extends Fragment {
 
         // Заполняем страницу
         if (!persons.isEmpty()) {
-            loadPersonsAndPlaces(persons, personsLinearLayout, "persons");
+            loadPersonsOrPlaces(persons, personsLinearLayout, PERSONS_KEY);
         }
         if (!places.isEmpty()) {
-            loadPersonsAndPlaces(places, placesLinearLayout, "places");
+            loadPersonsOrPlaces(places, placesLinearLayout, PLACES_KEY);
         }
 
         // Устанавливаем обработчики
-        addPersonImageButton.setOnClickListener(v -> showAddPersonsAndPlacesDialog("Добавить персону", "persons"));
-        addPlaceImageButton.setOnClickListener(v -> showAddPersonsAndPlacesDialog("Добавить место", "places"));
+        addPersonImageButton.setOnClickListener(v -> showAddPersonsAndPlacesDialog("Добавить персону", PERSONS_KEY, ""));
+        addPlaceImageButton.setOnClickListener(v -> showAddPersonsAndPlacesDialog("Добавить место", PLACES_KEY, ""));
     }
 
     private void initDeleteButtons() {
@@ -193,23 +196,23 @@ public class EditorFragment extends Fragment {
         Toast.makeText(context, "Все предметы успешно удалены", Toast.LENGTH_SHORT).show();
     }
 
-    private void loadPersonsAndPlaces(List<String> lst, LinearLayout parent, String personsOrPlaces) {
+    private void loadPersonsOrPlaces(List<String> lst, LinearLayout parent, String personsOrPlaces) {
         parent.removeAllViews();
-        for (String str : lst) {
-            addPersonsAndPlacesView(str, parent, personsOrPlaces);
+        for (String personOrPlace : lst) {
+            addPersonsAndPlacesView(personOrPlace, parent, personsOrPlaces);
         }
     }
-    private void addPersonsAndPlacesView(String text, LinearLayout parent, String personsOrPlaces) {
+    private void addPersonsAndPlacesView(String personOrPlace, LinearLayout parent, String personsOrPlaces) {
         // Надуваем макете
         LayoutInflater inflater = LayoutInflater.from(context);
         View item = inflater.inflate(R.layout.persons_and_places_item, null);
 
         // Находим элементы
-        TextView textView = item.findViewById(R.id.persons_and_places_item_text);
+        TextView personOrPlaceTextView = item.findViewById(R.id.persons_and_places_item_text);
         ImageView icon = item.findViewById(R.id.persons_and_places_item_icon);
 
         // Устанавливаем значения
-        textView.setText(text);
+        personOrPlaceTextView.setText(personOrPlace);
 
         Drawable iconDrawable = ContextCompat.getDrawable(context, R.drawable.pin);
         if (personsOrPlaces.equals("persons")) {
@@ -220,7 +223,7 @@ public class EditorFragment extends Fragment {
         icon.setImageDrawable(iconDrawable);
 
         // Устанавливаем обработчики
-        item.setOnClickListener(v -> showEditPersonsAndPlacesDialog(text));
+        item.setOnClickListener(v -> showAddPersonsAndPlacesDialog("Редактирование", personsOrPlaces, personOrPlace));
 
         // Устанавливаем отступы
         LayoutUtils.setMargins(context, item, 2, 4, 2, 4);
@@ -229,7 +232,7 @@ public class EditorFragment extends Fragment {
         parent.addView(item);
     }
 
-    private void showAddPersonsAndPlacesDialog(String titleText, String personsOrPlaces) {
+    private void showAddPersonsAndPlacesDialog(String titleText, String personsOrPlaces, String personOnPlace) {
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
 
         // Надуваем макет
@@ -239,33 +242,53 @@ public class EditorFragment extends Fragment {
 
         // Находим элементы
         TextView titleTextView = item.findViewById(R.id.dialog_add_person_and_places_title_text);
-        EditText editText = item.findViewById(R.id.dialog_add_person_and_places_edit_text);
+        EditText contentEditText = item.findViewById(R.id.dialog_add_person_and_places_edit_text);
         Button saveButton = item.findViewById(R.id.dialog_add_person_and_places_save_button);
         ImageButton closeButton = item.findViewById(R.id.dialog_add_person_and_places_close_image_button);
 
         // Устанавливаем значения
         titleTextView.setText(titleText);
+        contentEditText.setText(personOnPlace);
 
         // Создаём диалог
         AlertDialog dialog = builder.create();
 
         // Обрабатываем нажатия
+        if (!personOnPlace.isEmpty()) {
+            ImageButton deleteButton = item.findViewById(R.id.dialog_add_person_and_places_delete_image_button);
+            deleteButton.setVisibility(View.VISIBLE);
+            deleteButton.setOnClickListener(v -> {
+                deletePersonOrPlace(personsOrPlaces, personOnPlace);
+                dialog.dismiss();
+            });
+        }
+
         saveButton.setOnClickListener(v -> {
-            String text = editText.getText().toString();
-            if (text.isEmpty()) {
-                editText.setError("Введите что-нибудь");
+            String content = contentEditText.getText().toString();
+            if (content.isEmpty()) {
+                contentEditText.setError("Введите что-нибудь");
                 return;
             }
 
             // Обновляем нужный список
-            if (personsOrPlaces.equals("persons")) {
-                persons.add(text);
+            if (personsOrPlaces.equals(PERSONS_KEY)) {
+                int index = persons.indexOf(personOnPlace);
+                if (index >= 0) {
+                    persons.set(index, content);
+                } else {
+                    persons.add(content);
+                }
                 personsAndPlacesManager.setPersons(persons);
-                loadPersonsAndPlaces(persons, personsLinearLayout, personsOrPlaces);
-            } else if (personsOrPlaces.equals("places")) {
-                places.add(text);
+                loadPersonsOrPlaces(persons, personsLinearLayout, personsOrPlaces);
+            } else if (personsOrPlaces.equals(PLACES_KEY)) {
+                int index = places.indexOf(personOnPlace);
+                if (index >= 0) {
+                    places.set(index, content);
+                } else {
+                    places.add(content);
+                }
                 personsAndPlacesManager.setPlaces(places);
-                loadPersonsAndPlaces(places, placesLinearLayout, personsOrPlaces);
+                loadPersonsOrPlaces(places, placesLinearLayout, personsOrPlaces);
             }
 
             // Закрываем диалог
@@ -278,9 +301,20 @@ public class EditorFragment extends Fragment {
         dialog.show();
     }
 
-    private void showEditPersonsAndPlacesDialog(String text) {
-
+    private void deletePersonOrPlace(String personsOrPlaces, String personOrPlace) {
+        if (personsOrPlaces.equals(PERSONS_KEY)) {
+            persons.remove(personOrPlace);
+            personsAndPlacesManager.setPersons(persons);
+            loadPersonsOrPlaces(persons, personsLinearLayout, personsOrPlaces);
+            Toast.makeText(context, "Персона успешно удалена", Toast.LENGTH_SHORT).show();
+        } else if (personsOrPlaces.equals(PLACES_KEY)) {
+            places.remove(personOrPlace);
+            personsAndPlacesManager.setPlaces(places);
+            loadPersonsOrPlaces(places, placesLinearLayout, personsOrPlaces);
+            Toast.makeText(context, "Место успешно удалено", Toast.LENGTH_SHORT).show();
+        }
     }
+
 
     private void addTimetableItemView(String lessonNumber, String lessonTime) {
         // Надуваем макете
